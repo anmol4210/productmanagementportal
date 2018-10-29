@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nagarro.productmanagement.productManagement.dto.AdminDto;
+import com.nagarro.productmanagement.productManagement.dto.LoginDto;
 import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
 import com.nagarro.productmanagement.productManagement.models.Admin;
 import com.nagarro.productmanagement.productManagement.service.AdminService;
@@ -27,7 +27,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/login/admin")
-	public ResponseDto loginAdmin(@RequestBody AdminDto admin) {
+	public ResponseDto loginAdmin(@RequestBody LoginDto admin) {
 		return adminService.authenticateUser(admin);
 		
 	}

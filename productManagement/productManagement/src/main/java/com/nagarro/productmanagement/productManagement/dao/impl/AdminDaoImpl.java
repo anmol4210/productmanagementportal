@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.nagarro.productmanagement.productManagement.constants.HQLQueries;
 import com.nagarro.productmanagement.productManagement.dao.AdminDao;
-import com.nagarro.productmanagement.productManagement.dto.AdminDto;
+import com.nagarro.productmanagement.productManagement.dto.LoginDto;
 import com.nagarro.productmanagement.productManagement.dto.ResponseData;
 import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
 import com.nagarro.productmanagement.productManagement.utils.HibernateUtils;
@@ -24,7 +24,7 @@ public class AdminDaoImpl implements AdminDao {
 	}
 	
 	@Override
-	public ResponseDto authenticateAdmin(AdminDto admin) {
+	public ResponseDto authenticateAdmin(LoginDto admin) {
 
 		Query query = this.session.createQuery(HQLQueries.GET_ADMIN);
 		query.setParameter("username", admin.getUsername());

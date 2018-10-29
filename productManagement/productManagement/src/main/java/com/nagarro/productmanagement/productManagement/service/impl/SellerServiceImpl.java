@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nagarro.productmanagement.productManagement.dao.SellerDao;
-import com.nagarro.productmanagement.productManagement.dto.AdminDto;
+import com.nagarro.productmanagement.productManagement.dto.LoginDto;
 import com.nagarro.productmanagement.productManagement.dto.ResponseData;
 import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
 import com.nagarro.productmanagement.productManagement.dto.SellerRegistrationDto;
@@ -21,6 +21,13 @@ public class SellerServiceImpl implements SellerService{
 
 		return sellerdao.registerSeller(seller);
 		
+	}
+
+	@Override
+	public ResponseDto authenticateSeller(LoginDto seller) {
+
+		
+		return sellerdao.authenticateSeller(seller);
 	}
 
 }

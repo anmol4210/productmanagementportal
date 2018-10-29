@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nagarro.productmanagement.productManagement.dto.AdminDto;
+import com.nagarro.productmanagement.productManagement.dto.LoginDto;
 import com.nagarro.productmanagement.productManagement.dto.ResponseData;
 import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
 import com.nagarro.productmanagement.productManagement.dto.SellerRegistrationDto;
@@ -20,6 +20,12 @@ public class SellerController {
 	@PostMapping("/register/seller")
 	public ResponseDto registerSeller(@RequestBody SellerRegistrationDto seller) {
 		 return sellerService.registerSeller(seller);		
+	}
+	
+	
+	@PostMapping("/login/seller")
+	public ResponseDto authenticateSeller(@RequestBody LoginDto seller) {
+		 return sellerService.authenticateSeller(seller);		
 	}
 
 }

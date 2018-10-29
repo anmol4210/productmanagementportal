@@ -1,6 +1,6 @@
 package com.nagarro.productmanagement.productManagement.dto;
 
-public class AdminDto {
+public class LoginDto {
 
 	private int id;
 	private String username;
