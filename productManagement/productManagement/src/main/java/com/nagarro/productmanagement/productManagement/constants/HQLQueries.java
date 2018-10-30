@@ -11,6 +11,6 @@ public class HQLQueries {
 
 	public static final String GET_SELLER="SELECT seller.id , seller.sellername, seller.sellerstatus FROM "+SELLER_TABLE+" as seller"
 			+ "								 where seller.sellername=:username "
-													+ "and seller.sellerpassword=:password";
+													+ "and seller.sellerpassword=:password order by FIELD (seller.status,'NEED_APPROVAL','APPROVED','REJECTED')";
 
 }

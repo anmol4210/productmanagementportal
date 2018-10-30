@@ -52,7 +52,7 @@ public class SellerController {
 	
 	@GetMapping("/seller/{id}")
 	public Response getSeller(@PathVariable String id) {
-		System.out.println("id:"+id);
+		//System.out.println("id:"+id);
 		 return sellerService.getSeller(id);		
 	}
 	

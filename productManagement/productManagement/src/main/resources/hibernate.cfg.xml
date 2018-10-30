@@ -18,9 +18,10 @@
 		
 		
 		<mapping class="com.nagarro.productmanagement.productManagement.models.Admin"></mapping>
-		
-		  <mapping class="com.nagarro.productmanagement.productManagement.models.Seller"></mapping>
+		<mapping class="com.nagarro.productmanagement.productManagement.models.Seller"></mapping>
 		<mapping class="com.nagarro.productmanagement.productManagement.models.SellerDetails"></mapping>
-		
+		<mapping class="com.nagarro.productmanagement.productManagement.models.Product"></mapping>
+		<mapping class="com.nagarro.productmanagement.productManagement.models.GalleryImages"></mapping>		
+		<mapping class="com.nagarro.productmanagement.productManagement.models.Categories"></mapping>
 	</session-factory>
 </hibernate-configuration>

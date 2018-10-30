@@ -1,5 +1,7 @@
 package com.nagarro.productmanagement.productManagement.models;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,13 @@ public class Seller {
 	
 	@Column(name="sellerpassword",unique=false,nullable=false)
 	private String sellerpassword;
+	
+
+	@Column(name="createdat")
+	private LocalDateTime createdat;
+	
+	@Column(name="updatedat")
+	private LocalDateTime updatedat;
 	
 	@Column(name="sellerstatus",unique=false,nullable=false)
 	private String sellerstatus;
