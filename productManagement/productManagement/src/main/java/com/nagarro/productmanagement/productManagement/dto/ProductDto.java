@@ -23,7 +23,28 @@ public class ProductDto {
 	private String comments;	
 	private String productattributes;
 	private Seller seller;
+	private String[] galleryImages;
+	private String[] categories;
+	private int sellerId;
 	
+	public String[] getGalleryImages() {
+		return galleryImages;
+	}
+	public void setGalleryImages(String[] galleryImages) {
+		this.galleryImages = galleryImages;
+	}
+	public String[] getCategories() {
+		return categories;
+	}
+	public void setCategories(String[] categories) {
+		this.categories = categories;
+	}
+	public int getSellerId() {
+		return sellerId;
+	}
+	public void setSellerId(int sellerId) {
+		this.sellerId = sellerId;
+	}
 	public int getId() {
 		return id;
 	}

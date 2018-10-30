@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.nagarro.productmanagement.productManagement.constants.Constants;
 import com.nagarro.productmanagement.productManagement.dao.ProductDao;
-import com.nagarro.productmanagement.productManagement.dto.NewProductDto;
+
 import com.nagarro.productmanagement.productManagement.dto.ProductDto;
 import com.nagarro.productmanagement.productManagement.dto.Response;
 import com.nagarro.productmanagement.productManagement.dto.ResponseData;
+import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
+import com.nagarro.productmanagement.productManagement.dto.StatusDto;
 import com.nagarro.productmanagement.productManagement.models.Categories;
 import com.nagarro.productmanagement.productManagement.models.GalleryImages;
 import com.nagarro.productmanagement.productManagement.models.Product;
@@ -48,7 +50,20 @@ public class ProductDaoImpl implements ProductDao {
 		List<ProductDto> productList=new ArrayList();
 			
 		for(Product product:products) {
+			 query = this.session.createQuery("Select categories.categoryname FROM Categories as categories where categories.product.productid=:id");
+			query.setParameter("id", product.getId());
+			List<String> categoriesList=query.list();
+			String[] categoriesArray = categoriesList.toArray(new String[0]);
+			
+			 query = this.session.createQuery("Select images.imageurl FROM GalleryImages as images where images.product.productid=:id");
+				query.setParameter("id", product.getId());
+				List<String> galleryList=query.list();
+				String[] galleryImageArray = galleryList.toArray(new String[0]);
+				
+			
+			
 			ProductDto productDto=new ProductDto();
+			 productDto.setCategories(categoriesArray);
 			productDto.setComments(product.getComments());
 			productDto.setCreatedat(product.getCreatedat());
 			productDto.setDimensions(product.getDimensions());
@@ -69,6 +84,7 @@ public class ProductDaoImpl implements ProductDao {
 			productList.add(productDto);
 		}
 		response.setStatus(200);
+		response.setData(productList);
 		}
 		else {
 			response.setStatus(404);
@@ -83,7 +99,7 @@ public class ProductDaoImpl implements ProductDao {
 		
 	}
 	@Override
-	public Response addProduct(NewProductDto newProductDto) {
+	public Response addProduct(ProductDto newProductDto) {
 		
 		Response<String> response=new Response();
 		try {
@@ -106,6 +122,7 @@ public class ProductDaoImpl implements ProductDao {
 		product.setPrimaryimage(newProductDto.getPrimaryimage());
 		product.setUsageinstructins(newProductDto.getUsageinstructins());
 		product.setStatus(Constants.NEED_APPROVAL);
+		
 		LocalDateTime currenttime=LocalDateTime.now();
 		
 		//product.setCreatedat(currenttime);
@@ -145,16 +162,26 @@ public class ProductDaoImpl implements ProductDao {
 	} else {
 		
 		response.setStatus(400);
-		//response.setData(responseData);
 		response.setMessage("Unable to add Data");
 
 	}
 		}
 		catch(Exception e) {
 			response.setStatus(400);
-			//response.setData(responseData);
 			response.setMessage(e.getMessage());
 	}
+		return response;
+	}
+	@Override
+	public Response updateProductStatus(StatusDto status) {
+		Response response=new Response();
+		
+		try {
+		Object object = session.load(Product.class,new Integer(""+status.getId()));
+		Seller seller=(Seller) object;
+		seller.setSellerstatus(status.getStatus());
+		session.getTransaction().commit();
+		}catch(Exception e) {}
 		return response;
 	}
 

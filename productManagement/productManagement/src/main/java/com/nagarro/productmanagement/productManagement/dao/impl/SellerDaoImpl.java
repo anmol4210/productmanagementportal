@@ -4,6 +4,7 @@ import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Component;
@@ -139,11 +140,29 @@ public class SellerDaoImpl implements SellerDao {
 	}
 
 	@Override
-	public Response getAllSellers() {
+	public Response getAllSellers(List<String> sortBy, String status) {
 	
 		Response<List<SellerDetailsDto>> response=new Response();
 		try {
-		Query query = this.session.createQuery("FROM SellerDetails");
+	
+			
+            String whereClause = "";
+            String sortOrder = "";
+            
+            if(!Objects.isNull(status)) {
+                   whereClause = " WHERE SellerDetails.seller.status = '" + status + "'"; 
+            } else {
+                   sortOrder = " ORDER BY FIELD(SellerDetails.seller.status, 'NEED_APPROVAL','APPROVED','REJECTED')";
+            }
+            
+            if(!Objects.isNull(sortBy)) {
+                   for(String column: sortBy) {
+                         sortOrder +=", SellerDetails.seller."+column;
+                   }
+            }
+
+			
+			Query query = this.session.createQuery("FROM SellerDetails "+whereClause + sortOrder);
 	
 		List<SellerDetails> sellerList= query.list();
 

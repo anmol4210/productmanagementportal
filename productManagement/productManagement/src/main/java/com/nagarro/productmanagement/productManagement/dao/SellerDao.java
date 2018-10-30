@@ -15,7 +15,7 @@ public interface SellerDao {
 	public ResponseDto registerSeller(SellerRegistrationDto sellerRegistrationDto);
 	public ResponseDto authenticateSeller(LoginDto sellerLoginDto);
 	public ResponseDto updateSellerStatus(StatusDto status);
-	public Response getAllSellers();
+	public Response getAllSellers(List<String> sortBy, String status);
 	public Response getSeller(String id);
 	public Response updateSeller(SellerDetailsDto sellerDetails, String id);
 }

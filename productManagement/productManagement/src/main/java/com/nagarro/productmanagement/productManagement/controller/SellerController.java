@@ -46,8 +46,10 @@ public class SellerController {
 	}
 	
 	@GetMapping("/seller")
-	public Response getAllSeller() {
-		 return sellerService.getAllSellers();		
+	public Response getAllSeller(
+			@RequestParam(value="sortBy", required=false) List<String> sortBy,
+			@RequestParam(value="status", required=false) String status) {
+		 return sellerService.getAllSellers( sortBy,  status);		
 	}
 	
 	@GetMapping("/seller/{id}")

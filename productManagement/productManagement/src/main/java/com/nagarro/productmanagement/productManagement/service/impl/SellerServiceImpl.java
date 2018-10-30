@@ -42,8 +42,8 @@ public class SellerServiceImpl implements SellerService{
 	}
 
 	@Override
-	public Response getAllSellers() {
-		return sellerdao.getAllSellers();
+	public Response getAllSellers(List<String> sortBy, String status) {
+		return sellerdao.getAllSellers( sortBy,  status);
 	}
 
 	@Override
