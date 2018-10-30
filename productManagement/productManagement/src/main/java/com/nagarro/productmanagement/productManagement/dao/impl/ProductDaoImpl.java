@@ -18,6 +18,8 @@ import com.nagarro.productmanagement.productManagement.dto.NewProductDto;
 import com.nagarro.productmanagement.productManagement.dto.ProductDto;
 import com.nagarro.productmanagement.productManagement.dto.Response;
 import com.nagarro.productmanagement.productManagement.dto.ResponseData;
+import com.nagarro.productmanagement.productManagement.models.Categories;
+import com.nagarro.productmanagement.productManagement.models.GalleryImages;
 import com.nagarro.productmanagement.productManagement.models.Product;
 import com.nagarro.productmanagement.productManagement.models.Seller;
 import com.nagarro.productmanagement.productManagement.models.SellerDetails;
@@ -85,7 +87,7 @@ public class ProductDaoImpl implements ProductDao {
 		
 		Response<String> response=new Response();
 		try {
-			System.out.println("");
+		//	System.out.println("");
 		Seller seller = new Seller();
 		seller.setId(newProductDto.getSellerId());
 		//int sellerid = Integer.parseInt(session.save(seller).toString());
@@ -114,6 +116,22 @@ public class ProductDaoImpl implements ProductDao {
 		//sellerDetails.setSellerid(sellerid);
 
 		product.setSeller(seller);
+		
+		for(String category:newProductDto.getCategories()) {
+			Categories categories=new Categories();
+			categories.setCategoryname(category);
+			categories.setProduct(product);
+			session.save(categories);
+		}
+		
+		for(String imageurl:newProductDto.getGalleryImages() ) {
+			GalleryImages galleryImage=new GalleryImages();
+			galleryImage.setImageurl(imageurl);
+			galleryImage.setProduct(product);
+			session.save(galleryImage);
+			
+			
+		}
 		
 		if (session.save(product) != null) {
 			ResponseData responseData = new ResponseData();
