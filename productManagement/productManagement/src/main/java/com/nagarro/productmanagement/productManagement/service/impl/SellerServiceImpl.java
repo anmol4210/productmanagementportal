@@ -7,10 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.nagarro.productmanagement.productManagement.dao.SellerDao;
 import com.nagarro.productmanagement.productManagement.dto.LoginDto;
+import com.nagarro.productmanagement.productManagement.dto.Response;
 import com.nagarro.productmanagement.productManagement.dto.ResponseData;
 import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
 import com.nagarro.productmanagement.productManagement.dto.SellerRegistrationDto;
-import com.nagarro.productmanagement.productManagement.dto.SellerResponseDto;
+import com.nagarro.productmanagement.productManagement.dto.SellerDetailsDto;
 import com.nagarro.productmanagement.productManagement.dto.StatusDto;
 import com.nagarro.productmanagement.productManagement.service.SellerService;
 
@@ -41,13 +42,18 @@ public class SellerServiceImpl implements SellerService{
 	}
 
 	@Override
-	public List<SellerResponseDto> getAllSellers() {
+	public Response getAllSellers() {
 		return sellerdao.getAllSellers();
 	}
 
 	@Override
-	public SellerResponseDto getSeller(String id) {
+	public Response getSeller(String id) {
 		return sellerdao.getSeller(id);
+	}
+
+	@Override
+	public Response updateSeller(SellerDetailsDto sellerDetails, String id) {
+		return sellerdao.updateSeller(sellerDetails, id);
 	}
 
 }

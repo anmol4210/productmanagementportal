@@ -12,10 +12,11 @@ import com.nagarro.productmanagement.productManagement.constants.Constants;
 import com.nagarro.productmanagement.productManagement.constants.HQLQueries;
 import com.nagarro.productmanagement.productManagement.dao.SellerDao;
 import com.nagarro.productmanagement.productManagement.dto.LoginDto;
+import com.nagarro.productmanagement.productManagement.dto.Response;
 import com.nagarro.productmanagement.productManagement.dto.ResponseData;
 import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
 import com.nagarro.productmanagement.productManagement.dto.SellerRegistrationDto;
-import com.nagarro.productmanagement.productManagement.dto.SellerResponseDto;
+import com.nagarro.productmanagement.productManagement.dto.SellerDetailsDto;
 import com.nagarro.productmanagement.productManagement.dto.StatusDto;
 import com.nagarro.productmanagement.productManagement.models.Seller;
 import com.nagarro.productmanagement.productManagement.models.SellerDetails;
@@ -138,18 +139,19 @@ public class SellerDaoImpl implements SellerDao {
 	}
 
 	@Override
-	public List<SellerResponseDto> getAllSellers() {
+	public Response getAllSellers() {
+	
+		Response<List<SellerDetailsDto>> response=new Response();
+		try {
 		Query query = this.session.createQuery("FROM SellerDetails");
-		//	query.setParameter("username", sellerLoginDto.getUsername());
-	//	query.setParameter("password", sellerLoginDto.getPassword());
-
+	
 		List<SellerDetails> sellerList= query.list();
 
-		List<SellerResponseDto> reponseList=new ArrayList();
+		List<SellerDetailsDto> responseList=new ArrayList();
 		
 		for(SellerDetails sellerDetails : sellerList) {
 			
-			SellerResponseDto sellerResponseDto=new SellerResponseDto();
+			SellerDetailsDto sellerResponseDto=new SellerDetailsDto();
 			
 			sellerResponseDto.setStatus(sellerDetails.getSeller().getSellerstatus());
 			sellerResponseDto.setCompanyname(sellerDetails.getCompanyname());
@@ -159,14 +161,21 @@ public class SellerDaoImpl implements SellerDao {
 			sellerResponseDto.setOwnername(sellerDetails.getOwnername());
 			sellerResponseDto.setTelephone(sellerDetails.getTelephone());
 			sellerResponseDto.setUsername(sellerDetails.getSeller().getSellername());
-		reponseList.add(sellerResponseDto);
+		responseList.add(sellerResponseDto);
+		
 		}
-		return reponseList;
+		response.setStatus(200);
+		response.setData(responseList);
+		
+		}
+		catch(Exception e) {}
+		return response;
 	}
 
 	@Override
-	public SellerResponseDto getSeller(String id) {
-		SellerResponseDto sellerResponseDto=new SellerResponseDto();	
+	public Response getSeller(String id) {
+		Response<SellerDetailsDto> response=new Response();
+		
 		try {
 		int sellerid=Integer.parseInt(id);
 		Query query = this.session.createQuery("FROM SellerDetails as sellerdetails where sellerdetails.seller.id=:id");
@@ -175,6 +184,7 @@ public class SellerDaoImpl implements SellerDao {
 		List<SellerDetails> sellerList= query.list();
 		System.out.println(sellerList.size());
 	if(sellerList.size()>0) {
+		SellerDetailsDto sellerResponseDto=new SellerDetailsDto();	
 		SellerDetails sellerDetails=sellerList.get(0);
 		sellerResponseDto.setStatus(sellerDetails.getSeller().getSellerstatus());
 		sellerResponseDto.setCompanyname(sellerDetails.getCompanyname());
@@ -184,9 +194,55 @@ public class SellerDaoImpl implements SellerDao {
 		sellerResponseDto.setOwnername(sellerDetails.getOwnername());
 		sellerResponseDto.setTelephone(sellerDetails.getTelephone());
 		sellerResponseDto.setUsername(sellerDetails.getSeller().getSellername());
+		response.setStatus(200);
+		response.setData(sellerResponseDto);
 	}
+	else {
+		response.setStatus(404);
+		response.setMessage("No Data Found");
+		}
 	}catch(Exception e) {}
-		return sellerResponseDto;
+		return response;
 	}
+
+	@Override
+	public Response updateSeller(SellerDetailsDto sellerDetailsDto, String id) {
+	Response<SellerDetails> response=new Response();
+		
+		try {
+		
+			int sellerid=Integer.parseInt(id);
+			Query query = this.session.createQuery("FROM SellerDetails as sellerdetails where sellerdetails.seller.id=:id");
+			query.setParameter("id", sellerid);
+		
+			List<SellerDetails> sellerList= query.list();
+		
+			if(sellerList.size()>0) {
+				
+		Object object = session.load(SellerDetails.class,new Integer(""+sellerList.get(0).getId()));
+		SellerDetails sellerDetails=(SellerDetails) object;
+		
+		sellerDetails.setCompanyname(sellerDetailsDto.getCompanyname());
+		sellerDetails.setTelephone(sellerDetailsDto.getTelephone());
+		sellerDetails.setAddress(sellerDetailsDto.getAddress());
+		sellerDetails.setOwnername(sellerDetailsDto.getOwnername());
+		sellerDetails.setEmail(sellerDetailsDto.getEmail());
+		sellerDetails.setGst(sellerDetailsDto.getGst());
+		
+		session.getTransaction().commit();
+			response.setStatus(200);
+			response.setData(sellerDetails);
+			
+			}
+		}catch(Exception e) {
+			response.setStatus(400);
+			response.setMessage(e.getMessage());
+			
+		}
+	
+		return response;
+	}
+		
+	
 
 }

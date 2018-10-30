@@ -1,6 +1,6 @@
 package com.nagarro.productmanagement.productManagement.dto;
 
-public class SellerResponseDto {
+public class SellerDetailsDto {
 
 private String username;
 public String getUsername() {
