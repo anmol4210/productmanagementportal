@@ -38,21 +38,19 @@ public class SellerDetails {
 	
 	@Column(name="gstnumber",unique=false,nullable=false)
 	private String gst;
-//	
-//	@JoinColumn(name = "sellerid", unique = true)
-//    @OneToOne(cascade = CascadeType.ALL)
-//	private Seller seller;
 
-	@Column(name="sellerid",unique=false,nullable=false)
-	private int sellerid;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "sellerid")
+	private Seller seller;
 
-//	public Seller getSeller() {
-//		return seller;
-//	}
-//
-//	public void setSeller(Seller seller) {
-//		this.seller = seller;
-//	}
+
+	public Seller getSeller() {
+		return seller;
+	}
+
+	public void setSeller(Seller seller) {
+		this.seller = seller;
+	}
 
 	public int getId() {
 		return id;
@@ -108,14 +106,6 @@ public class SellerDetails {
 
 	public void setGst(String gst) {
 		this.gst = gst;
-	}
-
-	public int getSellerid() {
-		return sellerid;
-	}
-
-	public void setSellerid(int sellerid) {
-		this.sellerid = sellerid;
 	}
 
 
