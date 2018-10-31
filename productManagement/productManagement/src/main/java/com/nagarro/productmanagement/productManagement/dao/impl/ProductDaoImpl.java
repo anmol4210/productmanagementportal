@@ -42,28 +42,37 @@ public class ProductDaoImpl implements ProductDao {
 	public Response getProducts(String id) {
 		Response<List<ProductDto>> response=new Response();
 		try {
-		Query query = this.session.createQuery("FROM Product");
-		
+		Query query = this.session.createQuery("FROM Product as product where product.seller.id= :id ");
+		query.setParameter("id",Integer.parseInt(id));
 		List<Product> products=query.list();
 		
 		if(products.size()>0) {
 		List<ProductDto> productList=new ArrayList();
 			
 		for(Product product:products) {
-			 query = this.session.createQuery("Select categories.categoryname FROM Categories as categories where categories.product.productid=:id");
-			query.setParameter("id", product.getId());
+			
+			System.out.println("Product Id:"+product.getId());
+			
+			query = this.session.createQuery("SELECT categories.categoryname FROM Categories as categories where categories.product.id=:id");
+			query.setParameter("id", Integer.parseInt(""+product.getId()));
+			
 			List<String> categoriesList=query.list();
+			
+			System.out.println("categories size:"+categoriesList.size());
+			
 			String[] categoriesArray = categoriesList.toArray(new String[0]);
 			
-			 query = this.session.createQuery("Select images.imageurl FROM GalleryImages as images where images.product.productid=:id");
+			query = this.session.createQuery("SELECT images.imageurl FROM GalleryImages as images where images.product.id=:id");
 				query.setParameter("id", product.getId());
+			
 				List<String> galleryList=query.list();
 				String[] galleryImageArray = galleryList.toArray(new String[0]);
 				
 			
 			
 			ProductDto productDto=new ProductDto();
-			 productDto.setCategories(categoriesArray);
+			productDto.setCategories(categoriesArray);
+			productDto.setGalleryImages(galleryImageArray);
 			productDto.setComments(product.getComments());
 			productDto.setCreatedat(product.getCreatedat());
 			productDto.setDimensions(product.getDimensions());
@@ -81,9 +90,11 @@ public class ProductDaoImpl implements ProductDao {
 			productDto.setUpdatedat(product.getUpdatedat());
 			productDto.setUsageinstructins(product.getUsageinstructins());
 			productDto.setYmp(product.getYmp());
+			
 			productList.add(productDto);
 		}
 		response.setStatus(200);
+		//System.out.println("product Set:"+productList.get(1).getCategories()[0]);
 		response.setData(productList);
 		}
 		else {
@@ -91,8 +102,9 @@ public class ProductDaoImpl implements ProductDao {
 			response.setMessage("No Product Found");
 		}
 		}catch(Exception e) {
+			
 			response.setStatus(500);
-			response.setMessage(e.getMessage());
+			response.setMessage(""+e);
 		}
 		return response;
 		

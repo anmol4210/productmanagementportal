@@ -23,6 +23,8 @@ body {
 	height: 100%;
 }
 </style>
+
+     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -33,11 +35,22 @@ body {
                         <h3 class="text-info font-weight-light mb-4">Login</h3>
      	
    <form class="form-group" method="post" action="admin">    
-          <input class="form-control" path="username" required placeholder="username"/><br>  
-          <input class="form-control" path="password" type required placeholder="password"/><br>  
+          <input class="form-control"  name="username" required placeholder="username"/><br>  
+          <input class="form-control"  name="password" type required placeholder="password"/><br>  
           <input class="btn btn-info" type="submit" value="Login" />    
+      
+            <div class="g-recaptcha" data-sitekey="6LdA6ncUAAAAAG-YIhWgvUBrBFgNVG5X2O13UwdM"></div>
+      <br/>
+      
        </form>
 
+<%
+String isValid=""+session.getAttribute("isValid");
+if(!isValid.equalsIgnoreCase("null") && isValid.equalsIgnoreCase("false")){
+	session.setAttribute("isValid","true");
+	out.print("<font color=red>Username or password is Incorrect</font><br/>");
+}
+%>
         <hr/>
 
                         <a href="forgotPassword">Forget Password</a>

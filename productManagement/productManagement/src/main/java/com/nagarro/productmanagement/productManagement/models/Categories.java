@@ -13,7 +13,20 @@ import javax.persistence.Table;
 @Table(name="categories")
 public class Categories {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id",unique=true,nullable=false)
+	private int id;
+	
+	@Column(name="categoryname")
+	private String categoryname;
 
+	
+	@ManyToOne(optional=false)
+    @JoinColumn(name="productid")
+	private Product product;
+
+	
 	public int getId() {
 		return id;
 	}
@@ -44,17 +57,5 @@ public class Categories {
 	}
 
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id",unique=true,nullable=false)
-	private int id;
-	
-	@Column(name="categoryname")
-	private String categoryname;
-
-	
-	@ManyToOne(optional=false)
-    @JoinColumn(name="productid")
-	private Product product;
 
 }
