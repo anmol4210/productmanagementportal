@@ -38,10 +38,10 @@ public class SellerController {
 		 return sellerService.authenticateSeller(seller);		
 	}
 	
-	@PutMapping("/seller/statusupdate/{id}")
-	public ResponseDto updateSellerStatus(@PathVariable String id,@RequestBody StatusDto status,@RequestHeader(value="token") String token) {
-		 status.setToken(token);
-		 status.setId(Integer.parseInt(id));
+	@PutMapping("/seller/statusupdate")
+	public ResponseDto updateSellerStatus(@RequestBody List<StatusDto> status,@RequestHeader(value="token") String token) {
+		// status.setToken(token);
+		// status.setId(Integer.parseInt(id));
 		return sellerService.updateSellerStatus(status);		
 	}
 	

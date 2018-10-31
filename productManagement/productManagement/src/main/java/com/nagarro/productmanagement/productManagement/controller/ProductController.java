@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nagarro.productmanagement.productManagement.dto.NewProductDto;
 import com.nagarro.productmanagement.productManagement.dto.ProductDto;
 import com.nagarro.productmanagement.productManagement.dto.Response;
 import com.nagarro.productmanagement.productManagement.dto.ResponseDto;
@@ -28,8 +29,8 @@ public class ProductController {
 	}
 	
 	@PostMapping("/products")
-	public Response addProduct(@RequestBody ProductDto product) {
-		 return productService.addProduct(product);		
+	public Response addProduct(@RequestBody NewProductDto product) {
+		 return productService.addProduct(productService.saveImage(product));		
 	}
 	
 	@PutMapping("/product/statusupdate/{id}")

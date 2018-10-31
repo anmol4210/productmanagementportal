@@ -36,7 +36,7 @@ public class SellerServiceImpl implements SellerService{
 	}
 
 	@Override
-	public ResponseDto updateSellerStatus(StatusDto status) {
+	public ResponseDto updateSellerStatus(List<StatusDto> status) {
 		
 		return sellerdao.updateSellerStatus(status);
 	}

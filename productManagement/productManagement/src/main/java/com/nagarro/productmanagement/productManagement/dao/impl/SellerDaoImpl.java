@@ -127,14 +127,17 @@ public class SellerDaoImpl implements SellerDao {
 	
 
 	@Override
-	public ResponseDto updateSellerStatus(StatusDto status) {
+	public ResponseDto updateSellerStatus(List<StatusDto> statusDto) {
 		ResponseDto response=new ResponseDto();
 		
 		try {
+			for(StatusDto status:statusDto) {
 		Object object = session.load(Seller.class,new Integer(""+status.getId()));
 		Seller seller=(Seller) object;
 		seller.setSellerstatus(status.getStatus());
-		session.getTransaction().commit();
+		}
+			session.getTransaction().commit();
+			
 		}catch(Exception e) {}
 		return response;
 	}
