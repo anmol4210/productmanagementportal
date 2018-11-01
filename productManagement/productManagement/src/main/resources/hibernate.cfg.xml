@@ -17,11 +17,11 @@
 		
 		
 		
-		<mapping class="com.nagarro.productmanagement.productManagement.models.Admin"></mapping>
-		<mapping class="com.nagarro.productmanagement.productManagement.models.Seller"></mapping>
-		<mapping class="com.nagarro.productmanagement.productManagement.models.SellerDetails"></mapping>
-		<mapping class="com.nagarro.productmanagement.productManagement.models.Product"></mapping>
-		<mapping class="com.nagarro.productmanagement.productManagement.models.GalleryImages"></mapping>		
-		<mapping class="com.nagarro.productmanagement.productManagement.models.Categories"></mapping>
+		<mapping class="com.nagarro.productmanagement.models.Admin"></mapping>
+		<mapping class="com.nagarro.productmanagement.models.Seller"></mapping>
+		<mapping class="com.nagarro.productmanagement.models.SellerDetails"></mapping>
+		<mapping class="com.nagarro.productmanagement.models.Product"></mapping>
+		<mapping class="com.nagarro.productmanagement.models.GalleryImages"></mapping>		
+		<mapping class="com.nagarro.productmanagement.models.Categories"></mapping>
 	</session-factory>
 </hibernate-configuration>

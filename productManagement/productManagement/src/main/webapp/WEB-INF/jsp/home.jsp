@@ -14,9 +14,8 @@ a{color:inherit;text-decoration:none}
 
 .login-wrap{
 	width:100%;
+	height: 100%;
 	margin:auto;
-	max-width:525px;
-	min-height:670px;
 	position:relative;
 	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
 	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
@@ -213,11 +212,11 @@ a{color:inherit;text-decoration:none}
 			<input type="radio" name="searchp" value="contactNumber"> Contact Number
 			</div>
 				<div class="group">
-					<input id="search" type="search" class="input" data-type="text" style="width:75%;float:left">
+					<input id="search" type="search" class="input" data-type="text" style="width:70%;float:left">
 					<input type="submit" class="button" value="Search"style="width:25%;float:right; ">
 				</div>
 				
-				<div style="margin-top:20%;">
+				<div style="margin-top:15%;">
 				<table class="group" >
 				<tr>
 				<th>
@@ -275,8 +274,8 @@ a{color:inherit;text-decoration:none}
 				
 				<div class="hr" ></div>
 				<div class="group">
-				<input type="submit" class="button" value="Approve" style="float:left;width:50%">
-					<input style="float:right;width:50%"type="submit" class="button" value="Reject">
+				<input type="submit" class="button" value="Approve" style="float:left;width:25%">
+					<input style="float:right;width:25%"type="submit" class="button" value="Reject">
 				</div>
 			</div>
 			<div class="sign-up-htm">
@@ -287,11 +286,11 @@ a{color:inherit;text-decoration:none}
 			<input type="radio" name="searchp" value="productId"> Product ID
 			</div>
 				<div class="group">
-					<input id="search" type="search" class="input" data-type="text" style="width:75%;float:left">
+					<input id="search" type="search" class="input" data-type="text" style="width:70%;float:left">
 					<input type="submit" class="button" value="Search"style="width:25%;float:right; ">
 				</div>
 				
-				<div style="margin-top:20%;">
+				<div style="margin-top:15%;">
 				<table class="group">
 				<tr>
 				<th>
@@ -349,8 +348,8 @@ a{color:inherit;text-decoration:none}
 </div>
 				<div class="hr" ></div>
 				<div class="group">
-				<input type="submit" class="button" value="Approve" style="float:left;width:50%">
-					<input style="float:right;width:50%"type="submit" class="button" value="Reject">
+				<input type="submit" class="button" value="Approve" style="float:left;width:25%">
+					<input style="float:right;width:25%"type="submit" class="button" value="Reject">
 				</div>
 			</div>
 		</div>
