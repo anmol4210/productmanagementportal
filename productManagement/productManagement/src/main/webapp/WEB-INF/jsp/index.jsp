@@ -24,6 +24,8 @@ body {
 }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
@@ -34,12 +36,12 @@ body {
                   <div class="align-self-center">
                         <h3 class="text-info font-weight-light mb-4">Login</h3>
      	
-   <form class="form-group" method="post" action="admin">    
+   <form id="form" class="form-group" method="post" action="admin">    
           <input class="form-control"  name="username" required placeholder="username"/><br>  
           <input class="form-control"  name="password" type required placeholder="password"/><br>  
           <input class="btn btn-info" type="submit" value="Login" />    
-      
-            <div class="g-recaptcha" data-sitekey="6LdA6ncUAAAAAG-YIhWgvUBrBFgNVG5X2O13UwdM"></div>
+      <br><br>
+            <div class="g-recaptcha" data-sitekey="6Lf-KngUAAAAAOsJAmh9pT7R3o3cz4z10fQTARzu"></div>
       <br/>
       
        </form>
@@ -57,7 +59,16 @@ if(!isValid.equalsIgnoreCase("null") && isValid.equalsIgnoreCase("false")){
                   </div>
             </div>
       </div>
-
+<script>
+$('#form').on('submit', function(e) {
+	  if(grecaptcha.getResponse() == "") {
+	    e.preventDefault();
+	    return false
+	  } else {
+	    return true
+	  }
+	});
+</script>
 </body>
 </html>
 

@@ -129,46 +129,68 @@ public class SellerDaoImpl implements SellerDao {
 	@Override
 	public ResponseDto updateSellerStatus(List<StatusDto> statusDto) {
 		ResponseDto response=new ResponseDto();
-		
+		System.out.println("status service dao called");
 		try {
 			for(StatusDto status:statusDto) {
-		Object object = session.load(Seller.class,new Integer(""+status.getId()));
-		Seller seller=(Seller) object;
-		seller.setSellerstatus(status.getStatus());
+				System.out.println("status :"+status.getStatus());
+				Object object = session.load(Seller.class,new Integer(""+status.getId()));
+				Seller seller=(Seller) object;
+				seller.setSellerstatus(status.getStatus());
+				
 		}
 			session.getTransaction().commit();
 			
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			System.out.println(e);
+		}
 		return response;
 	}
 
 	@Override
-	public Response getAllSellers(List<String> sortBy, String status) {
+	public Response getAllSellers(String sortBy, List<String> status, String searchKeyword, String searchType) {
+	System.out.println("getting all sellers");
 	
 		Response<List<SellerDetailsDto>> response=new Response();
 		try {
 	
 			
             String whereClause = "";
-            String sortOrder = "";
+            String sortOrder =" ORDER BY FIELD(sellerDetails.seller.sellerstatus, 'NEED_APPROVAL','APPROVED','REJECTED')";
             
-            if(!Objects.isNull(status)) {
-                   whereClause = " WHERE SellerDetails.seller.status = '" + status + "'"; 
-            } else {
-                   sortOrder = " ORDER BY FIELD(SellerDetails.seller.status, 'NEED_APPROVAL','APPROVED','REJECTED')";
-            }
+            if(sortBy!=null) {
+    //        	System.out.println("status not null"+status);
+                   //whereClause = " WHERE sellerDetails.seller.sellerstatus = '" + status + "'"; 
+            		sortOrder=" ORDER BY sellerDetails.seller."+sortBy;
+            }  
             
-            if(!Objects.isNull(sortBy)) {
-                   for(String column: sortBy) {
-                         sortOrder +=", SellerDetails.seller."+column;
+            if(status!=null) {
+  //          	System.out.println("sort by not null:"+sortBy);
+            	whereClause = " WHERE sellerDetails.seller.sellerstatus IN (";
+                int count=0;   
+            	for(String column: status) {
+            		if(count!=0) {
+            			whereClause +=",";
+            		}
+                	   whereClause +="'"+ column+"'";
+                	   count++;
                    }
+            	whereClause +=")";
             }
+            
+            if(!Objects.isNull(searchKeyword) && !Objects.isNull(searchType)) {
+                sortOrder = "";
+                whereClause = " WHERE sellerDetails."+searchType+" LIKE '%"+searchKeyword+"%'";
+         }
+
 
 			
-			Query query = this.session.createQuery("FROM SellerDetails "+whereClause + sortOrder);
+			Query query = this.session.createQuery("FROM SellerDetails as sellerDetails "+whereClause + sortOrder);
 	
+			
 		List<SellerDetails> sellerList= query.list();
 
+//		System.out.println("seller list size from database"+sellerList.size());
+		
 		List<SellerDetailsDto> responseList=new ArrayList();
 		
 		for(SellerDetails sellerDetails : sellerList) {
@@ -183,14 +205,20 @@ public class SellerDaoImpl implements SellerDao {
 			sellerResponseDto.setOwnername(sellerDetails.getOwnername());
 			sellerResponseDto.setTelephone(sellerDetails.getTelephone());
 			sellerResponseDto.setUsername(sellerDetails.getSeller().getSellername());
-		responseList.add(sellerResponseDto);
+			sellerResponseDto.setSellerid(""+sellerDetails.getSeller().getId());
+		
+			responseList.add(sellerResponseDto);
 		
 		}
+		
+		System.out.println("list size:"+responseList.size());
 		response.setStatus(200);
 		response.setData(responseList);
 		
 		}
-		catch(Exception e) {}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 		return response;
 	}
 

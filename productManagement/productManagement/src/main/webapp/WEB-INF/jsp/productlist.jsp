@@ -1,20 +1,25 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="ISO-8859-1">
+<title>Products</title>
 <link
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 	rel="stylesheet"
 	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
 	crossorigin="anonymous">
+	
 <style>
-.show-checkbox{
+
+	.show-checkbox{
 display:block;
 }
 .hide-checkbox{
 display:none;
 }
-
 .edit-btn {
 			background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png');
 			height: 20px;
@@ -24,81 +29,81 @@ display:none;
     			background-position: center;
 			margin: auto;
 		}
-</style>
+	</style>	
 </head>
 <body>
-
-	<div class="bg-info d-flex justify-content-between shadow">
-		<h2 class="text-light font-weight-light p-3">Seller Details</h2>
-		<form  action="/product/allproducts">
-			<button type="submit" class="btn btn-outline-light m-3">Products</button>
-		</form>
-	
-		<form method="get" action="logout">
-		<button type="submit" class="btn btn-outline-light m-3">Logout</button>
-	</form>
-	
-	</div>
-	
-	
-	<form action="/seller/search" method="get">
+<form action="/allproducts/filterproducts">
                           <div class="">
                                  <input type="text" class="form-control m-3" placeholder="Enter keywords here" name="keyword">
                                  <div class="d-flex justify-content-center  mx-2 my-2">
                                          <span class="bg-success text-light p-2 rounded-left">Search by</span>
-                                           <input type="radio" name="searchBy" value="companyname" class="mb-2"> Company</br>
-                                           <input type="radio" name="searchBy" value="ownername" class="mb-2"> Owner Name</br>
-                                           <input type="radio" name="searchBy" value="telephone"> Telephone</br>
+                                           <input type="radio" name="searchBy" value="sellerid" class="mb-2"> Seller Id</br>
+                                           <input type="radio" name="searchBy" value="companyname" class="mb-2"> Company Name</br>
+                                           <input type="radio" name="searchBy" value="productid"> Product Id</br>
+                                           <input type="radio" name="searchBy" value="productname"> Product name</br>
+                                           <input type="radio" name="searchBy" value="sellerproductcode">Seller Product Code</br>
+                                        
+                                         
                                          
                                  </div>
                                
                                  <input type="submit" class="btn btn-info" value="Find">
                           </div>
                           </form>
-	
-	
-<div>
+<div class="container">
 <div class="row">
 <div class="col-sm-9">
-<form method="get" action="/seller/updatestatusall">
+
+<form action="changestatus" method="get">
 		<table class="table text-sm-center text-info">
 			<thead>
 				<tr>
-					<th>Seller Id</th>
-					<th>Seller Name</th>
+					<th>Product Code</th>
+					<th>Name</th>
 					<th>Status</th>
-					<th>Edit</th>
+					<th>Categories</th>
+					<th>MRP</th>
+					<th>SSP</th>
+					<th>YMP</th>
 				</tr>
 			</thead>
 
 			<tbody>
 
-			<c:forEach var="seller" items="${sellerList}">
+			<c:forEach var="product" items="${productList}">
 				
-<c:choose>
-  <c:when test="${seller.status=='NEED_APPROVAL'}">
-   <c:set value="show-checkbox" var="cssClass"></c:set>
-  </c:when>
+				<c:choose>
+  					<c:when test="${product.status=='NEED_APPROVAL'}">
+   						<c:set value="show-checkbox" var="cssClass"></c:set>
+  					</c:when>
   
-  <c:otherwise>
- <c:set value="hide-checkbox" var="cssClass"></c:set>  
-  </c:otherwise>
-</c:choose>
-
+  					<c:otherwise>
+ 						<c:set value="hide-checkbox" var="cssClass"></c:set>  
+  					</c:otherwise>
+				</c:choose>
+				
+				
 				<tr>
 					
-					<td>${seller.sellerid}</td>
-					<td>${seller.ownername}</td>
-					<td>${seller.status}</td>
+					<td>${product.sellerproductcode}</td>
+					<td>${product.productname}</td>
+					<td>${product.status}</td>
+					<td>
+					<c:forEach var="category" items="${product.categories}">
+					${category}
+					</c:forEach>
+					</td>
+					<td>${product.mrp}</td>
+					<td>${product.ssp}</td>
+					<td>${product.ymp}</td>
 					
-					<td >
-					
+						<td>
 				<input style="cursor:pointer;" class="edit-btn"  value="Update" 
-				onclick="location.href='/seller/details/${seller.sellerid}'"/>
+				onclick="location.href='productdetails/${product.id}'"/>
 					</td>
 					
 					<td class="${cssClass}" >
-						<input type="checkbox" value="${seller.sellerid}" name="id">
+						<input type="checkbox" value="${product.id}" name="id">
 					</td>
 					
 					</tr>
@@ -107,20 +112,23 @@ display:none;
 			</tbody>
 			
 		</table>
-		   <input type="submit" value="Approve Sellers" class="mt-4 btn btn-info w-100">
-			
-		</form>	
-			</div>	
+		 <input type="submit" value="Approve Products" class="mt-4 btn btn-info w-100">
+		</form>
+		</div>
 			<div class="col-sm-3 px-5 filters text-info">
                           <div class="text-info">
-                                 <form action="/seller/search">
+                                 <form action="/allproducts/filterproducts">
                                        <div class="mt-4 mb-2 form-label text-sm-center">Sort By</div>
-                                       <input type="radio" name="sortBy" value="id"> Seller Id<br>
+                                       <input type="radio" name="sortBy" value="mrp"> MRP<br>
+                                       <input type="radio" name="sortBy" value="ssp"> SSP<br>
+                                       <input type="radio" name="sortBy" value="ymp"> YMP<br>
                                        <input type="radio" name="sortBy" value="createdat"> Registration time<br>
                                        <div class="mt-4 mb-2 form-label  text-sm-center">Filter By</div>
                                        <input type="checkbox" name="status" value="NEED_APPROVAL"> Need Approval<br>
                                        <input type="checkbox" name="status" value="APPROVED"> Approved<br>
                                        <input type="checkbox" name="status" value="REJECTED"> Rejected<br>
+                                      
+                                       
                                        <div class="">
                                               <input type="submit" value="Apply" class="mt-4 btn btn-info w-100">
                                        </div>
@@ -128,7 +136,7 @@ display:none;
                           </div>
 			
 			</div>	
-	</div>	
-	</div>	
+		</div>
+		</div>
 </body>
 </html>

@@ -47,9 +47,14 @@ public class SellerController {
 	
 	@GetMapping("/seller")
 	public Response getAllSeller(
-			@RequestParam(value="sortBy", required=false) List<String> sortBy,
-			@RequestParam(value="status", required=false) String status) {
-		 return sellerService.getAllSellers( sortBy,  status);		
+			@RequestParam(value="sortBy", required=false) String sortBy,
+			@RequestParam(value="status", required=false) List<String> status,
+			 @RequestParam(value="searchBy", required=false) String searchType,
+			@RequestParam(value="keyword", required=false) String searchKeyword) {
+		
+		System.out.println("keyword:"+searchKeyword);
+		System.out.println("search By"+searchType);
+		return sellerService.getAllSellers( sortBy,  status, searchKeyword, searchType);		
 	}
 	
 	@GetMapping("/seller/{id}")

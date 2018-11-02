@@ -1,5 +1,7 @@
 package com.nagarro.productmanagement.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +26,8 @@ public class ProductController {
 	ProductService productService;
 	
 	@GetMapping("/products/{id}")
-	public Response getProducts(@PathVariable String id) {
-		 return productService.getProducts(id);		
+	public Response getProducts(@PathVariable String sellerid) {
+		 return productService.getProducts(sellerid);		
 	}
 	
 	@PostMapping("/products")
@@ -39,9 +41,9 @@ public class ProductController {
 //	}
 	
 	@PutMapping("/product/statusupdate/{id}")
-	public Response updateProductStatus(@PathVariable String id,@RequestBody StatusDto status,@RequestHeader(value="token") String token) {
-		 status.setToken(token);
-		 status.setId(Integer.parseInt(id));
+	public Response updateProductStatus(@RequestBody List<StatusDto> status,@RequestHeader(value="token") String token) {
+		// status.setToken(token);
+		 //status.setId(Integer.parseInt(id));
 		return productService.updateProductStatus(status);		
 	}
 }

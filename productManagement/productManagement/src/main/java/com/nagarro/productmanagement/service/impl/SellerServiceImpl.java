@@ -37,13 +37,13 @@ public class SellerServiceImpl implements SellerService{
 
 	@Override
 	public ResponseDto updateSellerStatus(List<StatusDto> status) {
-		
+		System.out.println("status update service callled");
 		return sellerdao.updateSellerStatus(status);
 	}
 
 	@Override
-	public Response getAllSellers(List<String> sortBy, String status) {
-		return sellerdao.getAllSellers( sortBy,  status);
+	public Response getAllSellers(String sortBy, List<String> status, String searchKeyword, String searchType) {
+		return sellerdao.getAllSellers( sortBy,  status,searchKeyword,searchType);
 	}
 
 	@Override

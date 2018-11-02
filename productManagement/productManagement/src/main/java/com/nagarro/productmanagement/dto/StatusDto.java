@@ -4,7 +4,7 @@ public class StatusDto {
 	
 	private String status;
 	private String token;
-	private int id;
+	private String id;
 	private String message;
 
 	public String getMessage() {
@@ -15,12 +15,12 @@ public class StatusDto {
 		this.message = message;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(String productId) {
+		this.id = productId;
 	}
 
 	public String getToken() {

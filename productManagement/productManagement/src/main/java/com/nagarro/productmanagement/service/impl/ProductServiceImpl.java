@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nagarro.productmanagement.dao.ProductDao;
+import com.nagarro.productmanagement.dao.ProductFilterDao;
 import com.nagarro.productmanagement.dao.SaveReadImagesDao;
 import com.nagarro.productmanagement.dao.impl.ProductDaoImpl;
+import com.nagarro.productmanagement.dao.impl.ProductFilterDaoImpl;
 import com.nagarro.productmanagement.dto.NewProductDto;
 import com.nagarro.productmanagement.dto.ProductDto;
 import com.nagarro.productmanagement.dto.Response;
@@ -23,11 +25,13 @@ public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	ProductDao productDao;
+	ProductFilterDao productFilterDao;
 	SaveReadImagesDao saveReadImageDao;
 	
+	
 	@Override
-	public Response getProducts(String id) {
-		return productDao.getProducts(id);
+	public Response getProducts(String sellerid) {
+		return productDao.getProducts(sellerid);
 		
 
 	}
@@ -39,7 +43,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Response updateProductStatus(StatusDto status) {
+	public Response updateProductStatus(List<StatusDto> status) {
 		// TODO Auto-generated method stub
 		return productDao.updateProductStatus(status);
 	}
@@ -53,6 +57,20 @@ public class ProductServiceImpl implements ProductService{
 	public ProductDto updateImage(NewProductDto productDto) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Response getProduct(String productid) {
+		// TODO Auto-generated method stub
+		return productDao.getProduct(productid);
+	}
+
+	@Override
+	public Response getAllProducts(String sortBy, List<String> status,String searchType, String searchKeyword) {
+		System.out.println("in service impl............");
+		ProductFilterDaoImpl filter=new ProductFilterDaoImpl();
+	//	filter.getAllProduct();
+		return filter.getAllProduct( sortBy, status,searchType,searchKeyword);
 	}
 
 }

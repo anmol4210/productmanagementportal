@@ -1,6 +1,7 @@
 package com.nagarro.productmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import com.nagarro.productmanagement.service.AdminService;
 import com.nagarro.productmanagement.service.impl.AdminServiceImpl;
 
 @RestController
+@CrossOrigin
 public class AdminController {
 
 	
@@ -28,6 +30,7 @@ public class AdminController {
 	
 	@PostMapping("/login/admin")
 	public ResponseDto loginAdmin(@RequestBody LoginDto admin) {
+		System.out.println(admin);
 		return adminService.authenticateUser(admin);
 		
 	}
