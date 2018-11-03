@@ -14,14 +14,14 @@ public class NewProductDto {
 	private Float mrp;
 	private Float ssp;
 	private Float ymp;
-	private byte[] primaryimage;
+	private String primaryimage;
 	private String usageinstructins;
 	private String status;
 	private LocalDateTime createdat;
 	private LocalDateTime updatedat;
 	private String comments;	
 	private String productattributes;
-	private byte[][] galleryImages;
+	private String[] galleryImages;
 	private String[] categories;
 	private int sellerId;
 	
@@ -79,10 +79,10 @@ public class NewProductDto {
 	public void setYmp(Float ymp) {
 		this.ymp = ymp;
 	}
-	public byte[] getPrimaryimage() {
+	public String getPrimaryimage() {
 		return primaryimage;
 	}
-	public void setPrimaryimage(byte[] primaryimage) {
+	public void setPrimaryimage(String primaryimage) {
 		this.primaryimage = primaryimage;
 	}
 	public String getUsageinstructins() {
@@ -122,10 +122,10 @@ public class NewProductDto {
 		this.productattributes = productattributes;
 	}
 	
-	public byte[][] getGalleryImages() {
+	public String[] getGalleryImages() {
 		return galleryImages;
 	}
-	public void setGalleryImages(byte[][] galleryImages) {
+	public void setGalleryImages(String[] galleryImages) {
 		this.galleryImages = galleryImages;
 	}
 	public String[] getCategories() {

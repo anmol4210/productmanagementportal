@@ -82,33 +82,27 @@ public class ProductFilterDaoImpl implements ProductFilterDao {
 			
 		for(Product product:products) {
 			List<String> galleryList=null;
-			byte[][] galleryImageArray=null;
-			byte[] primaryImage=null;
+			
+			String[] galleryImageArray=null;
+			
 			query = this.session.createQuery("SELECT categories.categoryname FROM Categories as categories where categories.product.id=:id");
 			query.setParameter("id", Integer.parseInt(""+product.getId()));
 			
 			List<String> categoriesList=query.list();
 			
-			System.out.println("categories size...."+categoriesList.size());
 			String[] categoriesArray = categoriesList.toArray(new String[0]);
 			
 			query = this.session.createQuery("SELECT images.imageurl FROM GalleryImages as images where images.product.id=:id");
-				query.setParameter("id", product.getId());
+			
+			query.setParameter("id", product.getId());
 			
 				 galleryList=query.list();
-				System.out.println("gallery size......"+galleryList.size());
-				if(galleryList.size()>0) {
-				 galleryImageArray = new byte[galleryList.size()][];
+			
+				 if(galleryList.size()>0) {
+			
+					 galleryImageArray = galleryList.toArray(new String[0]);
 				
-				for(int index=0;index<galleryList.size();index++) {
-					galleryImageArray[index]=saveReadImageDao.readImage(galleryList.get(index));
 				}
-				}
-				System.out.println("primary......");
-				if(product.getPrimaryimage()!=null) {
-				// primaryImage=saveReadImageDao.readImage(product.getPrimaryimage());
-					}
-			System.out.println("after primary......");
 			
 			NewProductDto productDto=new NewProductDto();
 			productDto.setCategories(categoriesArray);
@@ -119,7 +113,7 @@ public class ProductFilterDaoImpl implements ProductFilterDao {
 			productDto.setId(product.getId());
 			productDto.setLongdiscription(product.getLongdiscription());
 			productDto.setMrp(product.getMrp());
-			productDto.setPrimaryimage(primaryImage);
+			productDto.setPrimaryimage(product.getPrimaryimage());
 			productDto.setProductattributes(product.getProductattributes());
 			productDto.setProductname(product.getProductname());
 			productDto.setSellerId(product.getSeller().getId());

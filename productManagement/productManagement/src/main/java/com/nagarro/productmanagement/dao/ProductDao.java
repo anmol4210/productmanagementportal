@@ -11,5 +11,6 @@ public interface ProductDao {
 	public Response getProduct(String productid);
 	public Response getProducts(String id);
 	public Response addProduct(ProductDto newProductDto );
+	public Response updateProduct(ProductDto newProductDto );
 	public Response updateProductStatus(List<StatusDto> status);
 }

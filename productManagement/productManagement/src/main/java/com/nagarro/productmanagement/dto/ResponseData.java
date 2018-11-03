@@ -4,8 +4,18 @@ public class ResponseData {
 	private int id;
 	private String token;
 	private String username;
+	//private String status;
 	
-	
+//	public String getStatus() {
+//		return status;
+//	}
+//
+//
+//	public void setStatus(String status) {
+//		this.status = status;
+//	}
+
+
 	public ResponseData(){}
 
 

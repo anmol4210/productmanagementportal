@@ -27,68 +27,68 @@ public class SaveReadImagesDaoImpl implements SaveReadImagesDao {
 	
 	@Override
 	public ProductDto saveImage(NewProductDto newProductDto) {
-		List<String> imageUrl=new ArrayList();
-		ProductDto productDto=new ProductDto();
-		try {
-		byte[][] images=newProductDto.getGalleryImages();
-		int index=0;
-	    File directory = new File("D:\\images\\"+newProductDto.getProductname());
-	    if (! directory.exists()){
-	        directory.mkdir();
-	        // If you require it to make the entire directory path including parents,
-	        // use directory.mkdirs(); here instead.
-	    }
-	    String primaryImagePath="D:\\images\\"+newProductDto.getProductname()+"\\primaryImage"+".png";
-	   
-	    
-	    FileOutputStream fileOutputStream=new FileOutputStream(primaryImagePath);    
-		fileOutputStream.write(newProductDto.getPrimaryimage());    
-		fileOutputStream.close();   
-	
-
-		for(byte[] image:images) {
-			String galleryImagePath= "D:\\images\\"+newProductDto.getProductname()+"\\"+index+".png";
-		
-			
-			fileOutputStream=new FileOutputStream(galleryImagePath);    
-			fileOutputStream.write(image);    
-			fileOutputStream.close();   
-			index++;
-			imageUrl.add(galleryImagePath);
-		}
-		
-		
-		
-	
-		
-		productDto.setCategories(newProductDto.getCategories());
-		productDto.setComments(newProductDto.getComments());
-		productDto.setCreatedat(newProductDto.getCreatedat());
-		productDto.setDimensions(newProductDto.getDimensions());
-		productDto.setGalleryImages(imageUrl.toArray(new String[0]));
-		productDto.setId(newProductDto.getId());
-		productDto.setLongdiscription(newProductDto.getLongdiscription());
-		productDto.setPrimaryimage(primaryImagePath.toString());
-		productDto.setGalleryImages(imageUrl.toArray(new String[0]));
-		productDto.setMrp(newProductDto.getMrp());
-		productDto.setProductattributes(newProductDto.getProductattributes());
-		productDto.setProductname(newProductDto.getProductname());
-		productDto.setSellerId(newProductDto.getSellerId());
-		productDto.setSellerproductcode(newProductDto.getSellerproductcode());
-		productDto.setShortdiscription(newProductDto.getShortdiscription());
-		productDto.setSsp(newProductDto.getSsp());
-		productDto.setYmp(newProductDto.getYmp());
-		productDto.setStatus(newProductDto.getStatus());
-		productDto.setUpdatedat(newProductDto.getUpdatedat());
-		productDto.setUsageinstructins(newProductDto.getUsageinstructins());
-		
-		
-		}
-		catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return productDto;
-
+//		List<String> imageUrl=new ArrayList();
+	ProductDto productDto=new ProductDto();
+//		try {
+//		byte[][] images=newProductDto.getGalleryImages();
+//		int index=0;
+//	    File directory = new File("D:\\images\\"+newProductDto.getProductname());
+//	    if (! directory.exists()){
+//	        directory.mkdir();
+//	        // If you require it to make the entire directory path including parents,
+//	        // use directory.mkdirs(); here instead.
+//	    }
+//	    String primaryImagePath="D:\\images\\"+newProductDto.getProductname()+"\\primaryImage"+".png";
+//	   
+//	    
+//	    FileOutputStream fileOutputStream=new FileOutputStream(primaryImagePath);    
+//		fileOutputStream.write(newProductDto.getPrimaryimage());    
+//		fileOutputStream.close();   
+//	
+//
+//		for(byte[] image:images) {
+//			String galleryImagePath= "D:\\images\\"+newProductDto.getProductname()+"\\"+index+".png";
+//		
+//			
+//			fileOutputStream=new FileOutputStream(galleryImagePath);    
+//			fileOutputStream.write(image);    
+//			fileOutputStream.close();   
+//			index++;
+//			imageUrl.add(galleryImagePath);
+//		}
+//		
+//		
+//		
+//	
+//		
+//		productDto.setCategories(newProductDto.getCategories());
+//		productDto.setComments(newProductDto.getComments());
+//		productDto.setCreatedat(newProductDto.getCreatedat());
+//		productDto.setDimensions(newProductDto.getDimensions());
+//		productDto.setGalleryImages(imageUrl.toArray(new String[0]));
+//		productDto.setId(newProductDto.getId());
+//		productDto.setLongdiscription(newProductDto.getLongdiscription());
+//		productDto.setPrimaryimage(primaryImagePath.toString());
+//		productDto.setGalleryImages(imageUrl.toArray(new String[0]));
+//		productDto.setMrp(newProductDto.getMrp());
+//		productDto.setProductattributes(newProductDto.getProductattributes());
+//		productDto.setProductname(newProductDto.getProductname());
+//		productDto.setSellerId(newProductDto.getSellerId());
+//		productDto.setSellerproductcode(newProductDto.getSellerproductcode());
+//		productDto.setShortdiscription(newProductDto.getShortdiscription());
+//		productDto.setSsp(newProductDto.getSsp());
+//		productDto.setYmp(newProductDto.getYmp());
+//		productDto.setStatus(newProductDto.getStatus());
+//		productDto.setUpdatedat(newProductDto.getUpdatedat());
+//		productDto.setUsageinstructins(newProductDto.getUsageinstructins());
+//		
+//		
+//		}
+//		catch(Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+	return productDto;
+//
 	}
 
 

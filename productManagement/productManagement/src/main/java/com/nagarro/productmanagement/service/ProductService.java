@@ -12,7 +12,8 @@ import com.nagarro.productmanagement.dto.StatusDto;
 public interface ProductService {
 	public Response getProduct(String productid);
 	public Response getProducts(String sellerid);
-	public Response addProduct(ProductDto newProductDto);
+	public Response addProduct(NewProductDto newProductDto);
+	public Response updateProduct(NewProductDto newProductDto);
 	public Response updateProductStatus(List<StatusDto> status);
 	public ProductDto saveImage(NewProductDto productDto); 
 	public ProductDto updateImage(NewProductDto productDto);

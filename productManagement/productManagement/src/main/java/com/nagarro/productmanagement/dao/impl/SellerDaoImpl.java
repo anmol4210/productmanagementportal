@@ -108,13 +108,13 @@ public class SellerDaoImpl implements SellerDao {
 		else if(list.get(0)[2].toString().equals(Constants.NEED_APPROVAL)){
 			response.setStatus(403);
 			response.setData(adminResponse);
-			response.setMessage("Needs Approval");
+			response.setMessage("Your registration is not yet approved");
 			}
 
 		else if(list.get(0)[2].toString().equals(Constants.REJECTED)){
 			response.setStatus(403);
 			response.setData(adminResponse);
-			response.setMessage("Rejected");
+			response.setMessage("Registration has been cancelled");
 			}
 		}
 		else{

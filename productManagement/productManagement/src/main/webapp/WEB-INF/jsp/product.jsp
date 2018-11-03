@@ -55,7 +55,7 @@ display:none;
 			<c:forEach var="product" items="${productList}">
 				
 				<c:choose>
-  					<c:when test="${product.status=='NEED_APPROVAL'}">
+  					<c:when test="${(product.status=='NEED_APPROVAL') or (product.status=='REVIEW')}">
    						<c:set value="show-checkbox" var="cssClass"></c:set>
   					</c:when>
   

@@ -37,9 +37,26 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Response addProduct(ProductDto newProductDto) {
-		// TODO Auto-generated method stub
-		return productDao.addProduct(newProductDto);
+	public Response addProduct(NewProductDto newProductDto) {
+		
+		ProductDto productDto=new ProductDto();
+		productDto.setCategories(newProductDto.getCategories());
+		productDto.setComments(newProductDto.getComments());
+		productDto.setDimensions(newProductDto.getDimensions());
+		productDto.setLongdiscription(newProductDto.getLongdiscription());
+		productDto.setPrimaryimage(newProductDto.getPrimaryimage());
+		productDto.setGalleryImages(newProductDto.getGalleryImages());
+		productDto.setMrp(newProductDto.getMrp());
+		productDto.setProductattributes(newProductDto.getProductattributes());
+		productDto.setProductname(newProductDto.getProductname());
+		productDto.setSellerId(newProductDto.getSellerId());
+		//productDto.setSellerproductcode(newProductDto.getSellerproductcode());
+		productDto.setShortdiscription(newProductDto.getShortdiscription());
+		productDto.setSsp(newProductDto.getSsp());
+		productDto.setYmp(newProductDto.getYmp());
+		productDto.setUsageinstructins(newProductDto.getUsageinstructins());
+		productDto.setSellerproductcode(newProductDto.getSellerproductcode());
+		return productDao.addProduct(productDto);
 	}
 
 	@Override
@@ -71,6 +88,30 @@ public class ProductServiceImpl implements ProductService{
 		ProductFilterDaoImpl filter=new ProductFilterDaoImpl();
 	//	filter.getAllProduct();
 		return filter.getAllProduct( sortBy, status,searchType,searchKeyword);
+	}
+
+	@Override
+	public Response updateProduct(NewProductDto newProductDto) {
+		ProductDto productDto=new ProductDto();
+		productDto.setCategories(newProductDto.getCategories());
+		//productDto.setComments(newProductDto.getComments());
+		productDto.setDimensions(newProductDto.getDimensions());
+		productDto.setLongdiscription(newProductDto.getLongdiscription());
+		productDto.setPrimaryimage(newProductDto.getPrimaryimage());
+		//productDto.setGalleryImages(newProductDto.getGalleryImages());
+		productDto.setMrp(newProductDto.getMrp());
+		productDto.setProductattributes(newProductDto.getProductattributes());
+		productDto.setProductname(newProductDto.getProductname());
+		productDto.setSellerId(newProductDto.getSellerId());
+		productDto.setSellerproductcode(newProductDto.getSellerproductcode());
+		productDto.setShortdiscription(newProductDto.getShortdiscription());
+		productDto.setSsp(newProductDto.getSsp());
+		productDto.setYmp(newProductDto.getYmp());
+		System.out.println("usage instructions:"+newProductDto.getUsageinstructins());
+		productDto.setUsageinstructins(newProductDto.getUsageinstructins());
+		productDto.setStatus(newProductDto.getStatus());
+		productDto.setId(newProductDto.getId());
+		return productDao.updateProduct(productDto);
 	}
 
 }

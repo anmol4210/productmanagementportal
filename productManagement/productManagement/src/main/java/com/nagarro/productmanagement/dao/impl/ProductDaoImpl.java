@@ -45,6 +45,9 @@ public class ProductDaoImpl implements ProductDao {
 	
 	@Override
 	public Response getProducts(String id) {
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	
 		Response<List<NewProductDto>> response=new Response();
 		try {
 			
@@ -53,11 +56,10 @@ public class ProductDaoImpl implements ProductDao {
 		List<Product> products=query.list();
 		
 		if(products.size()>0) {
-		List<NewProductDto> productList=new ArrayList();
+		
+			List<NewProductDto> productList=new ArrayList();
 			
 		for(Product product:products) {
-			
-			System.out.println("Product Id:"+product.getId());
 			
 			query = this.session.createQuery("SELECT categories.categoryname FROM Categories as categories where categories.product.id=:id");
 			query.setParameter("id", Integer.parseInt(""+product.getId()));
@@ -66,7 +68,6 @@ public class ProductDaoImpl implements ProductDao {
 			
 			
 			String[] categoriesArray = categoriesList.toArray(new String[0]);
-			System.out.println("categories size:"+categoriesArray.length);
 			
 			query = this.session.createQuery("SELECT images.imageurl FROM GalleryImages as images where images.product.id=:id");
 				query.setParameter("id", product.getId());
@@ -74,15 +75,8 @@ public class ProductDaoImpl implements ProductDao {
 				List<String> galleryList=query.list();
 				
 				
-				byte[][] galleryImageArray = new byte[galleryList.size()][];
+				String[] galleryImageArray = galleryList.toArray(new String[0]);
 				
-				for(int index=0;index<galleryList.size();index++) {
-					galleryImageArray[index]=saveReadImageDao.readImage(galleryList.get(index));
-				}
-				//galleryList.toArray(new String[0]);
-				
-				byte[] primaryImage=saveReadImageDao.readImage(product.getPrimaryimage());
-			
 			
 			NewProductDto productDto=new NewProductDto();
 			productDto.setCategories(categoriesArray);
@@ -93,7 +87,7 @@ public class ProductDaoImpl implements ProductDao {
 			productDto.setId(product.getId());
 			productDto.setLongdiscription(product.getLongdiscription());
 			productDto.setMrp(product.getMrp());
-			productDto.setPrimaryimage(primaryImage);
+			productDto.setPrimaryimage(product.getPrimaryimage());
 			productDto.setProductattributes(product.getProductattributes());
 			productDto.setProductname(product.getProductname());
 			productDto.setSellerId(product.getSeller().getId());
@@ -108,7 +102,6 @@ public class ProductDaoImpl implements ProductDao {
 			productList.add(productDto);
 		}
 		response.setStatus(200);
-		//System.out.println("product Set:"+productList.get(1).getCategories()[0]);
 		response.setData(productList);
 		}
 		else {
@@ -127,73 +120,84 @@ public class ProductDaoImpl implements ProductDao {
 	
 	@Override
 	public Response addProduct(ProductDto newProductDto) {
+		System.out.println("add product dao......");
+		System.out.println("id:"+newProductDto.getSellerId());
+		System.out.println("seller product code:"+newProductDto.getSellerproductcode());
 		
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	System.out.println("session is ready.........");
 		Response<String> response=new Response();
 		try {
-		//	System.out.println("");
-		Seller seller = new Seller();
-		seller.setId(newProductDto.getSellerId());
-		//int sellerid = Integer.parseInt(session.save(seller).toString());
-		Product product=new Product();
-		
+		System.out.println("setting seller");
+			Seller seller = new Seller();
+			seller.setId(newProductDto.getSellerId());
+			System.out.println("seller is ready...");
+			Product product=new Product();
+			System.out.println("1");
 		product.setSellerproductcode(newProductDto.getSellerproductcode());
-		
-		
+		System.out.println("2");
 		product.setProductname(newProductDto.getProductname());
+		System.out.println("3");
 		product.setShortdiscription(newProductDto.getShortdiscription());
 		product.setLongdiscription(newProductDto.getLongdiscription());	
 		product.setDimensions(newProductDto.getDimensions());
 		product.setMrp(newProductDto.getMrp());
+		System.out.println("6");
 		product.setSsp(newProductDto.getSsp());
+		System.out.println("7");
 		product.setYmp(newProductDto.getYmp()); 
 		product.setPrimaryimage(newProductDto.getPrimaryimage());
+		System.out.println("8");
 		product.setUsageinstructins(newProductDto.getUsageinstructins());
 		product.setStatus(Constants.NEED_APPROVAL);
 		
-		LocalDateTime currenttime=LocalDateTime.now();
+		
+		//LocalDateTime currenttime=LocalDateTime.now();
 		
 		//product.setCreatedat(currenttime);
 		//product.setUpdatedat(currenttime);		
-		product.setComments(newProductDto.getComments());
+		//product.setComments(newProductDto.getComments());
 		
 		product.setProductattributes(newProductDto.getProductattributes());
-		//sellerDetails.setSellerid(sellerid);
-
+		System.out.println("15");
 		product.setSeller(seller);
+		System.out.println("16");
+//		for(String category:newProductDto.getCategories()) {
+//			Categories categories=new Categories();
+//			categories.setCategoryname(category);
+//			categories.setProduct(product);
+//			session.save(categories);
+//		}
 		
-		for(String category:newProductDto.getCategories()) {
-			Categories categories=new Categories();
-			categories.setCategoryname(category);
-			categories.setProduct(product);
-			session.save(categories);
-		}
+//		for(String imageurl:newProductDto.getGalleryImages() ) {
+//			GalleryImages galleryImage=new GalleryImages();
+//			galleryImage.setImageurl(imageurl);
+//			galleryImage.setProduct(product);
+//			session.save(galleryImage);
+//			
+//			
+//		}
 		
-		for(String imageurl:newProductDto.getGalleryImages() ) {
-			GalleryImages galleryImage=new GalleryImages();
-			galleryImage.setImageurl(imageurl);
-			galleryImage.setProduct(product);
-			session.save(galleryImage);
-			
-			
-		}
+		System.out.println("ready to save product........");
+		session.save(product);
+		session.getTransaction().commit();
+//		if (session.save(product) != null) {
+//			ResponseData responseData = new ResponseData();
+//			System.out.println("seller id:"+seller.getId());
+//			response.setStatus(200);
+//			} 
+//		else {
+//		
+//		response.setStatus(400);
+//		response.setMessage("Unable to add Data");
+//
+//	}
+		response.setStatus(200);
 		
-		if (session.save(product) != null) {
-			ResponseData responseData = new ResponseData();
-			System.out.println("seller id:"+seller.getId());
-			response.setStatus(200);
-			//responseDto.setData(responseData);
-
-			session.getTransaction().commit();
-
-	
-	} else {
-		
-		response.setStatus(400);
-		response.setMessage("Unable to add Data");
-
-	}
 		}
 		catch(Exception e) {
+		System.out.println(e);
 			response.setStatus(400);
 			response.setMessage(e.getMessage());
 	}
@@ -203,7 +207,9 @@ public class ProductDaoImpl implements ProductDao {
 	
 	@Override
 	public Response updateProductStatus(List<StatusDto> status) {
-		
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	
 		Response response=new Response();
 		
 		try {
@@ -228,7 +234,9 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public Response getProduct(String productid) {
-		
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	
 		Response<NewProductDto> response=new Response();
 		try {
 		Query query = this.session.createQuery("FROM Product as product where product.id= :id ");
@@ -237,13 +245,10 @@ public class ProductDaoImpl implements ProductDao {
 		
 		NewProductDto productDto=new NewProductDto();
 		if(products.size()>0) {
-		
-		
-		
+	
 		
 		for(Product product:products) {
 			
-			//System.out.println("Product Id:"+product.getId());
 			
 			query = this.session.createQuery("SELECT categories.categoryname FROM Categories as categories"
 					+ " where categories.product.id=:id");
@@ -253,22 +258,13 @@ public class ProductDaoImpl implements ProductDao {
 			
 			
 			String[] categoriesArray = categoriesList.toArray(new String[0]);
-		//	System.out.println("categories size:"+categoriesArray.length);
 			
 			query = this.session.createQuery("SELECT images.imageurl FROM GalleryImages as images where images.product.id=:id");
 				query.setParameter("id", product.getId());
 			
 				List<String> galleryList=query.list();
 			
-				byte[][] galleryImageArray = new byte[galleryList.size()][];
-				
-				for(int index=0;index<galleryList.size();index++) {
-					galleryImageArray[index]=saveReadImageDao.readImage(galleryList.get(index));
-				}
-				//galleryList.toArray(new String[0]);
-				
-				byte[] primaryImage=saveReadImageDao.readImage(product.getPrimaryimage());
-			
+				String[] galleryImageArray = galleryList.toArray(new String[0]);
 			
 			productDto.setCategories(categoriesArray);
 			productDto.setGalleryImages(galleryImageArray);
@@ -278,7 +274,7 @@ public class ProductDaoImpl implements ProductDao {
 			productDto.setId(product.getId());
 			productDto.setLongdiscription(product.getLongdiscription());
 			productDto.setMrp(product.getMrp());
-			productDto.setPrimaryimage(primaryImage);
+			productDto.setPrimaryimage(product.getPrimaryimage());
 			productDto.setProductattributes(product.getProductattributes());
 			productDto.setProductname(product.getProductname());
 			productDto.setSellerId(product.getSeller().getId());
@@ -309,6 +305,46 @@ public class ProductDaoImpl implements ProductDao {
 	
 	
 	
+	}
+
+	@Override
+	public Response updateProduct(ProductDto newProductDto) {
+		System.out.println("updating products.............");
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	
+		Response<String> response=new Response();
+		try {
+		Object object = session.load(Product.class, new Integer(""+newProductDto.getId()));
+		Product product = (Product) object;
+		//product.setCategories(newProductDto.getCategories());
+		//product.setComments(newProductDto.getComments());
+		product.setDimensions(newProductDto.getDimensions());
+		product.setLongdiscription(newProductDto.getLongdiscription());
+		product.setPrimaryimage(newProductDto.getPrimaryimage());
+		//product.setGalleryImages(newProductDto.getGalleryImages());
+		product.setMrp(newProductDto.getMrp());
+		product.setProductattributes(newProductDto.getProductattributes());
+		product.setProductname(newProductDto.getProductname());
+		
+		//product.setSeller(newProductDto.getSellerId());
+		product.setSellerproductcode(newProductDto.getSellerproductcode());
+		product.setShortdiscription(newProductDto.getShortdiscription());
+		product.setSsp(newProductDto.getSsp());
+		product.setYmp(newProductDto.getYmp());
+		product.setUsageinstructins(newProductDto.getUsageinstructins());
+		//product.setStatus(newProductDto.getStatus());
+		product.setId(newProductDto.getId());
+		//user.setPassword(resetUser.getPassword());
+		session.getTransaction().commit();
+		response.setStatus(200);
+		response.setData("Product updated");
+		}catch(Exception e) {
+			response.setStatus(400);
+			response.setMessage(e.getMessage());
+		}
+		
+		return response;
 	}
 
 }
