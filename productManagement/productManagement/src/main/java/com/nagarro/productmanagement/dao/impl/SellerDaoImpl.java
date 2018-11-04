@@ -48,7 +48,7 @@ public class SellerDaoImpl implements SellerDao {
 			seller.setSellerstatus(Constants.NEED_APPROVAL);
 
 			//int sellerid = Integer.parseInt(session.save(seller).toString());
-
+System.out.println("gst number"+sellerRegistrationDto.getGst());
 			SellerDetails sellerDetails = new SellerDetails();
 			sellerDetails.setCompanyname(sellerRegistrationDto.getCompanyName());
 			sellerDetails.setOwnername(sellerRegistrationDto.getOwnerName());

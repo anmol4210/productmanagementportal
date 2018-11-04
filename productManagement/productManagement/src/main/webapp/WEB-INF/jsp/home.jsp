@@ -24,12 +24,18 @@ display:none;
     			background-position: center;
 			margin: auto;
 		}
+		
+		.find-btn {
+			margin-top: 15px;
+			height: 40px;
+		}
 </style>
 </head>
 <body>
 
 	<div class="bg-info d-flex justify-content-between shadow">
 		<h2 class="text-light font-weight-light p-3">Seller Details</h2>
+		<div class="d-flex">
 		<form  action="/product/allproducts">
 			<button type="submit" class="btn btn-outline-light m-3">Products</button>
 		</form>
@@ -37,22 +43,30 @@ display:none;
 		<form method="get" action="logout">
 		<button type="submit" class="btn btn-outline-light m-3">Logout</button>
 	</form>
+	</div>
 	
 	</div>
 	
 	
 	<form action="/seller/search" method="get">
                           <div class="">
-                                 <input type="text" class="form-control m-3" placeholder="Enter keywords here" name="keyword">
+                          <div class=" row">
+                          	<div class="col-sm-4"></div>
+                          	<div class="col-sm-4 mx-5  d-flex">
+                          		<input type="text" class="form-control m-3 w-50" placeholder="Enter keywords here" name="keyword">
+                          		<input type="submit" class="btn btn-info find-btn" value="Find">
+                          	</div>
+                          	<div class="col-sm-4"></div>
+                          </div>
+                                 
                                  <div class="d-flex justify-content-center  mx-2 my-2">
-                                         <span class="bg-success text-light p-2 rounded-left">Search by</span>
-                                           <input type="radio" name="searchBy" value="companyname" class="mb-2"> Company</br>
+                                         <input type="radio" name="searchBy" value="companyname" class="mb-2"> Company</br>
                                            <input type="radio" name="searchBy" value="ownername" class="mb-2"> Owner Name</br>
                                            <input type="radio" name="searchBy" value="telephone"> Telephone</br>
                                          
                                  </div>
                                
-                                 <input type="submit" class="btn btn-info" value="Find">
+                                 
                           </div>
                           </form>
 	
@@ -114,7 +128,7 @@ display:none;
 			<div class="col-sm-3 px-5 filters text-info">
                           <div class="text-info">
                                  <form action="/seller/search">
-                                       <div class="mt-4 mb-2 form-label text-sm-center">Sort By</div>
+                                       <div class="mb-2 form-label text-sm-center">Sort By</div>
                                        <input type="radio" name="sortBy" value="id"> Seller Id<br>
                                        <input type="radio" name="sortBy" value="createdat"> Registration time<br>
                                        <div class="mt-4 mb-2 form-label  text-sm-center">Filter By</div>

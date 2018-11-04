@@ -3,6 +3,7 @@ package com.nagarro.productmanagement.dao.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -44,15 +45,41 @@ public class ProductDaoImpl implements ProductDao {
 	}
 	
 	@Override
-	public Response getProducts(String id) {
+	public Response getProducts(String id,String sortBy, List<String> status,	String searchType, String searchKeyword) {
 		this.session = HibernateUtils.createSession();
 		this.session.beginTransaction();
 	
 		Response<List<NewProductDto>> response=new Response();
 		try {
 			
-			Query query = this.session.createQuery("FROM Product as product where product.seller.id= :id ");
+			String whereClause = "";
+            String sortOrder = "";
+            
+            if(!Objects.isNull(status)) {
+                   whereClause = " AND product.status IN (";
+                   
+                   int count=0;
+                   for(String eachStatus: status) {
+                         System.out.println(eachStatus);
+                         if(count!=0) {
+                                whereClause += ", ";
+                         }
+                         whereClause += "'"+eachStatus+"'";
+                         count++;
+                   }
+                   
+                   whereClause += ")";
+            }
+            
+            if(!Objects.isNull(sortBy)) {
+                   sortOrder = " ORDER BY product."+sortBy;
+            }
+
+			Query query = this.session.createQuery("FROM Product as product where product.seller.id= :id "
+			+whereClause+sortOrder);
 		query.setParameter("id",Integer.parseInt(id));
+		
+		
 		List<Product> products=query.list();
 		
 		if(products.size()>0) {
@@ -120,23 +147,16 @@ public class ProductDaoImpl implements ProductDao {
 	
 	@Override
 	public Response addProduct(ProductDto newProductDto) {
-		System.out.println("add product dao......");
-		System.out.println("id:"+newProductDto.getSellerId());
-		System.out.println("seller product code:"+newProductDto.getSellerproductcode());
 		
 		this.session = HibernateUtils.createSession();
 		this.session.beginTransaction();
-	System.out.println("session is ready.........");
 		Response<String> response=new Response();
 		try {
-		System.out.println("setting seller");
 			Seller seller = new Seller();
 			seller.setId(newProductDto.getSellerId());
-			System.out.println("seller is ready...");
 			Product product=new Product();
 			System.out.println("1");
 		product.setSellerproductcode(newProductDto.getSellerproductcode());
-		System.out.println("2");
 		product.setProductname(newProductDto.getProductname());
 		System.out.println("3");
 		product.setShortdiscription(newProductDto.getShortdiscription());
@@ -160,9 +180,8 @@ public class ProductDaoImpl implements ProductDao {
 		//product.setComments(newProductDto.getComments());
 		
 		product.setProductattributes(newProductDto.getProductattributes());
-		System.out.println("15");
 		product.setSeller(seller);
-		System.out.println("16");
+	
 //		for(String category:newProductDto.getCategories()) {
 //			Categories categories=new Categories();
 //			categories.setCategoryname(category);
@@ -179,7 +198,6 @@ public class ProductDaoImpl implements ProductDao {
 //			
 //		}
 		
-		System.out.println("ready to save product........");
 		session.save(product);
 		session.getTransaction().commit();
 //		if (session.save(product) != null) {

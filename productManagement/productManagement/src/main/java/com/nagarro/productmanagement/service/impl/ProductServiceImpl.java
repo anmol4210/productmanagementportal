@@ -25,13 +25,15 @@ public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	ProductDao productDao;
+	@Autowired
 	ProductFilterDao productFilterDao;
+	@Autowired
 	SaveReadImagesDao saveReadImageDao;
 	
 	
 	@Override
-	public Response getProducts(String sellerid) {
-		return productDao.getProducts(sellerid);
+	public Response getProducts(String sellerid,String sortBy, List<String> status,	String searchType, String searchKeyword) {
+		return productDao.getProducts(sellerid,sortBy,status,searchType,searchKeyword);
 		
 
 	}
@@ -113,5 +115,13 @@ public class ProductServiceImpl implements ProductService{
 		productDto.setId(newProductDto.getId());
 		return productDao.updateProduct(productDto);
 	}
+
+	@Override
+	public Response searchProducts(String id, String searchType, String searchKeyword) {
+		System.out.println("in service.......");
+		return productFilterDao.searchProducts(id, searchType, searchKeyword);
+	}
+
+	
 
 }

@@ -102,7 +102,11 @@ public class SellerViewController {
 	}
 	
 	@RequestMapping(value="/seller/details/products",method = RequestMethod.GET)
-	public ModelAndView getProducts(ModelMap model,HttpServletRequest request) {
+	public ModelAndView getProducts(ModelMap model,HttpServletRequest request,
+			@RequestParam(value="sortBy",required=false) String sortBy,
+			@RequestParam(value="status",required=false) List<String> status,
+			 @RequestParam(value="searchBy", required=false) String searchType,
+				@RequestParam(value="keyword", required=false) String searchKeyword) {
 		String sellerid="";
 		Cookie[] cookies=request.getCookies();
 	    if(cookies!=null){
@@ -113,7 +117,7 @@ public class SellerViewController {
 	    	}
 	    }
 	    
-		Response<List<NewProductDto>> response=productService.getProducts(sellerid);
+		Response<List<NewProductDto>> response=productService.getProducts(sellerid,sortBy,status,searchType,searchKeyword);
 		model.addAttribute("productList",response.getData());
 		return new ModelAndView("product","command",new NewProductDto());
 	}

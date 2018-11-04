@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nagarro.productmanagement.dto.NewProductDto;
@@ -18,6 +19,7 @@ import com.nagarro.productmanagement.dto.Response;
 import com.nagarro.productmanagement.dto.ResponseDto;
 import com.nagarro.productmanagement.dto.SellerRegistrationDto;
 import com.nagarro.productmanagement.dto.StatusDto;
+import com.nagarro.productmanagement.service.FilterService;
 import com.nagarro.productmanagement.service.ProductService;
 
 @RestController
@@ -28,9 +30,23 @@ public class ProductController {
 	ProductService productService;
 	
 	@GetMapping("/products/{id}")
-	public Response getProducts(@PathVariable String id) {
-		
-		 return productService.getProducts(id);		
+	public Response getProducts(@PathVariable String id,
+			@RequestParam(value="sortBy",required=false) String sortBy,
+			@RequestParam(value="status",required=false) List<String> status,
+			 @RequestParam(value="searchBy", required=false) String searchType,
+				@RequestParam(value="keyword", required=false) String searchKeyword) {
+		System.out.println("sort by:"+sortBy);
+		 return productService.getProducts(id,sortBy,status,searchType,searchKeyword);		
+	}
+	
+	@GetMapping("/products/search/{id}")
+	public Response searchProducts(@PathVariable String id,
+			 @RequestParam(value="searchBy", required=false) String searchType,
+				@RequestParam(value="keyword", required=false) String searchKeyword) {
+		System.out.println("search by:"+searchType);
+		System.out.println("keyword:"+searchKeyword);
+		System.out.println("sellerid:"+id);
+		return productService.searchProducts(id, searchType, searchKeyword);
 	}
 	
 	@GetMapping("/product/{id}")

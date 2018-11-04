@@ -31,6 +31,7 @@ public class SellerController {
 	
 	@PostMapping("/seller/register")
 	public ResponseDto registerSeller(@RequestBody SellerRegistrationDto seller) {
+		System.out.println("controller gst:"+seller.getGst());
 		 return sellerService.registerSeller(seller);		
 	}
 	

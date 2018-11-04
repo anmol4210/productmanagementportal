@@ -2,6 +2,7 @@ package com.nagarro.productmanagement.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -145,5 +146,94 @@ public class ProductFilterDaoImpl implements ProductFilterDao {
 		
 	
 	}
+	
+	@Override
+	public Response searchProducts(String id,String searchType, String searchKeyword) {
+		System.out.println("search products dao.........");
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	
+		Response<List<NewProductDto>> response=new Response();
+		try {
+			
+			String whereClause = "";
+            
+            if(!Objects.isNull(searchType)) {
+                   whereClause = " AND product."+searchType+" like '%"+searchKeyword+"%'";
+               
+            }
+            
+
+			Query query = this.session.createQuery("FROM Product as product where product.seller.id= :id "
+			+whereClause);
+		query.setParameter("id",Integer.parseInt(id));
+				
+		List<Product> products=query.list();
+		
+		if(products.size()>0) {
+		
+			List<NewProductDto> productList=new ArrayList();
+	
+		for(Product product:products) {
+			
+			query = this.session.createQuery("SELECT categories.categoryname FROM Categories as categories where categories.product.id=:id");
+			query.setParameter("id", Integer.parseInt(""+product.getId()));
+			
+			List<String> categoriesList=query.list();
+			
+			System.out.println("hello.....");
+			String[] categoriesArray = categoriesList.toArray(new String[0]);
+			
+			query = this.session.createQuery("SELECT images.imageurl FROM GalleryImages as images where images.product.id=:id");
+				query.setParameter("id", product.getId());
+			
+				List<String> galleryList=query.list();
+				
+				
+				String[] galleryImageArray = galleryList.toArray(new String[0]);
+				
+			
+			NewProductDto productDto=new NewProductDto();
+			productDto.setCategories(categoriesArray);
+			productDto.setGalleryImages(galleryImageArray);
+			productDto.setComments(product.getComments());
+			productDto.setCreatedat(product.getCreatedat());
+			productDto.setDimensions(product.getDimensions());
+			productDto.setId(product.getId());
+			productDto.setLongdiscription(product.getLongdiscription());
+			productDto.setMrp(product.getMrp());
+			productDto.setPrimaryimage(product.getPrimaryimage());
+			productDto.setProductattributes(product.getProductattributes());
+			productDto.setProductname(product.getProductname());
+			productDto.setSellerId(product.getSeller().getId());
+			productDto.setSellerproductcode(product.getSellerproductcode());
+			productDto.setShortdiscription(product.getShortdiscription());
+			productDto.setSsp(product.getSsp());
+			productDto.setStatus(product.getStatus());
+			productDto.setUpdatedat(product.getUpdatedat());
+			productDto.setUsageinstructins(product.getUsageinstructins());
+			productDto.setYmp(product.getYmp());
+			
+			productList.add(productDto);
+		}
+		response.setStatus(200);
+		response.setData(productList);
+		}
+		else {
+			response.setStatus(404);
+			response.setMessage("No Product Found");
+		}
+		}catch(Exception e) {
+			System.out.println(e);
+			response.setStatus(500);
+			response.setMessage(""+e);
+		}
+		return response;
+		
+		
+	}
+
+
+
 
 }
