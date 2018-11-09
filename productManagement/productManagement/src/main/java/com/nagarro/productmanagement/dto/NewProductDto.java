@@ -17,8 +17,8 @@ public class NewProductDto {
 	private String primaryimage;
 	private String usageinstructins;
 	private String status;
-	private LocalDateTime createdat;
-	private LocalDateTime updatedat;
+	private String createdat;
+	private String updatedat;
 	private String comments;	
 	private String productattributes;
 	private String[] galleryImages;
@@ -97,16 +97,16 @@ public class NewProductDto {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public LocalDateTime getCreatedat() {
+	public String getCreatedat() {
 		return createdat;
 	}
-	public void setCreatedat(LocalDateTime createdat) {
+	public void setCreatedat(String createdat) {
 		this.createdat = createdat;
 	}
-	public LocalDateTime getUpdatedat() {
+	public String getUpdatedat() {
 		return updatedat;
 	}
-	public void setUpdatedat(LocalDateTime updatedat) {
+	public void setUpdatedat(String updatedat) {
 		this.updatedat = updatedat;
 	}
 	public String getComments() {

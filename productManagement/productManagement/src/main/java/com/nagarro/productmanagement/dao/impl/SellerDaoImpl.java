@@ -2,7 +2,9 @@ package com.nagarro.productmanagement.dao.impl;
 
 import org.hibernate.Session;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +28,8 @@ import com.nagarro.productmanagement.utils.HibernateUtils;
 @Component
 public class SellerDaoImpl implements SellerDao {
 
+	   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+
 	private Session session;
 
 	public SellerDaoImpl() {
@@ -46,9 +50,9 @@ public class SellerDaoImpl implements SellerDao {
 			seller.setSellername(sellerRegistrationDto.getUsername());
 			seller.setSellerpassword(sellerRegistrationDto.getPassword());
 			seller.setSellerstatus(Constants.NEED_APPROVAL);
+			seller.setCreatedat(dateFormat.format(new Date()));
+			seller.setUpdatedat(dateFormat.format(new Date()));
 
-			//int sellerid = Integer.parseInt(session.save(seller).toString());
-System.out.println("gst number"+sellerRegistrationDto.getGst());
 			SellerDetails sellerDetails = new SellerDetails();
 			sellerDetails.setCompanyname(sellerRegistrationDto.getCompanyName());
 			sellerDetails.setOwnername(sellerRegistrationDto.getOwnerName());
@@ -57,12 +61,10 @@ System.out.println("gst number"+sellerRegistrationDto.getGst());
 			sellerDetails.setGst(sellerRegistrationDto.getGst());
 			sellerDetails.setTelephone(sellerRegistrationDto.getTelephone());
 			sellerDetails.setSeller(seller);
-			//sellerDetails.setSellerid(sellerid);
-
+			
 			
 			if (session.save(sellerDetails) != null) {
 				ResponseData responseData = new ResponseData();
-				System.out.println("seller id:"+seller.getId());
 				responseData.setId(seller.getId());
 				responseData.setUsername(seller.getSellername().toString());
 				responseData.setToken("");
@@ -99,7 +101,6 @@ System.out.println("gst number"+sellerRegistrationDto.getGst());
 		ResponseData adminResponse=new ResponseData();
 		adminResponse.setId(Integer.parseInt(""+list.get(0)[0]));
 		adminResponse.setUsername(list.get(0)[1].toString());
-		System.out.println("Status:"+list.get(0)[2].toString());
 		
 		if(list.get(0)[2].toString().equals(Constants.APPROVED)){
 		response.setStatus(200);
@@ -136,6 +137,8 @@ System.out.println("gst number"+sellerRegistrationDto.getGst());
 				Object object = session.load(Seller.class,new Integer(""+status.getId()));
 				Seller seller=(Seller) object;
 				seller.setSellerstatus(status.getStatus());
+				seller.setUpdatedat(dateFormat.format(new Date()));
+
 				
 		}
 			session.getTransaction().commit();
@@ -158,13 +161,10 @@ System.out.println("gst number"+sellerRegistrationDto.getGst());
             String sortOrder =" ORDER BY FIELD(sellerDetails.seller.sellerstatus, 'NEED_APPROVAL','APPROVED','REJECTED')";
             
             if(sortBy!=null) {
-    //        	System.out.println("status not null"+status);
-                   //whereClause = " WHERE sellerDetails.seller.sellerstatus = '" + status + "'"; 
             		sortOrder=" ORDER BY sellerDetails.seller."+sortBy;
             }  
             
             if(status!=null) {
-  //          	System.out.println("sort by not null:"+sortBy);
             	whereClause = " WHERE sellerDetails.seller.sellerstatus IN (";
                 int count=0;   
             	for(String column: status) {
@@ -189,7 +189,6 @@ System.out.println("gst number"+sellerRegistrationDto.getGst());
 			
 		List<SellerDetails> sellerList= query.list();
 
-//		System.out.println("seller list size from database"+sellerList.size());
 		
 		List<SellerDetailsDto> responseList=new ArrayList();
 		
@@ -281,6 +280,10 @@ System.out.println("gst number"+sellerRegistrationDto.getGst());
 		sellerDetails.setOwnername(sellerDetailsDto.getOwnername());
 		sellerDetails.setEmail(sellerDetailsDto.getEmail());
 		sellerDetails.setGst(sellerDetailsDto.getGst());
+		
+		Seller updatedSeller=sellerDetails.getSeller();
+		updatedSeller.setUpdatedat(dateFormat.format(new Date()));
+		sellerDetails.setSeller(updatedSeller);
 		
 		session.getTransaction().commit();
 			response.setStatus(200);

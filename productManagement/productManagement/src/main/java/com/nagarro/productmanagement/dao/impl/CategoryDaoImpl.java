@@ -33,7 +33,7 @@ private Session session;
 	
 		Response<List<String>> response=new Response();
 		try {
-		Query query = this.session.createQuery("Select distinct (categories.categoryname) FROM Categories as categories");
+		Query query = this.session.createQuery("Select distinct(categories.categoryname) FROM Categories as categories");
 			List<String> categories=query.list();
 			if(categories.size()>0) {
 			response.setData(categories);
@@ -58,12 +58,22 @@ private Session session;
 		this.session.beginTransaction();
 		Response<String> response=new Response();
 	try {
-		Categories categories=new Categories();
-	categories.setCategoryname(categoryDto.getCategory());
-		session.save(categoryDto);
-		session.getTransaction().commit();
-		response.setStatus(200);
-		
+		Query query = this.session.createQuery("Select (categories.categoryname) FROM Categories as categories where categories.categoryname = :categoryname  ");
+		query.setParameter("categoryname", categoryDto.getCategory());
+		List<String> categories=query.list();
+	
+		if(categories.size()==0) {
+			
+			Categories category=new Categories();
+			category.setCategoryname(categoryDto.getCategory());
+			session.save(category);
+			session.getTransaction().commit();
+			response.setStatus(200);
+		}
+		else {
+			response.setStatus(400);
+			response.setMessage("Category already exists");
+		}
 	}catch(Exception e) {
 		response.setStatus(400);
 		response.setMessage(e.getMessage());
@@ -103,6 +113,64 @@ private Session session;
 		
 		return response;
 	
+	}
+
+	@Override
+	public Response deleteCategory(CategoryDto categoryDto) {
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	
+		Response<List<CategoryDto>> response=new Response();
+	try {
+		Query query = this.session.createQuery("FROM Categories as categories where categories.categoryname = :categoryname  and categories.product.id is not null ");
+		query.setParameter("categoryname", categoryDto.getCategory());
+		List<CategoryDto> categories=query.list();
+	
+		if(categories.size()==0) {
+		
+			query = session.createQuery("delete from Categories as categories where categories.categoryname = :categoryname");
+			query.setParameter("categoryname", categoryDto.getCategory());
+			 System.out.println(query.executeUpdate());
+	   session.getTransaction().commit();
+	 	response.setStatus(200);
+		}
+		else {
+			response.setStatus(400);
+			response.setMessage("cannot delete category");
+			System.out.println("not null......");
+		}
+	}catch(Exception e) {
+		System.out.println(e);
+	}
+		
+		return null;
+	}
+
+	@Override
+	public Response getCategoryProducts(String categoryname) {
+		this.session = HibernateUtils.createSession();
+		this.session.beginTransaction();
+	
+		Response<List<CategoryDto>> response=new Response();
+		try {
+		Query query = this.session.createQuery(" FROM Categories as categories where categories.categoryname = :categoryname and categories.product.id is not null");
+		query.setParameter("categoryname",categoryname)	;
+		List<CategoryDto> categories=query.list();
+			if(categories.size()>0) {
+			response.setData(categories);
+			response.setStatus(200);
+			
+			}
+			else {
+				response.setStatus(404);
+				response.setMessage("No Category created");
+			}
+		}catch(Exception e) {
+			response.setStatus(400);
+			response.setMessage(e.getMessage());
+		}
+		
+		return response;
 	}
 
 }

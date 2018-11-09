@@ -100,7 +100,7 @@ public class ProductServiceImpl implements ProductService{
 		productDto.setDimensions(newProductDto.getDimensions());
 		productDto.setLongdiscription(newProductDto.getLongdiscription());
 		productDto.setPrimaryimage(newProductDto.getPrimaryimage());
-		//productDto.setGalleryImages(newProductDto.getGalleryImages());
+		productDto.setGalleryImages(newProductDto.getGalleryImages());
 		productDto.setMrp(newProductDto.getMrp());
 		productDto.setProductattributes(newProductDto.getProductattributes());
 		productDto.setProductname(newProductDto.getProductname());

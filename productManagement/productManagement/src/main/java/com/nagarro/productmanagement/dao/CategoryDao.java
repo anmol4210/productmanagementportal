@@ -9,4 +9,6 @@ public interface CategoryDao {
 	public Response getProductCategories(String productId);
 	public Response addNewCategory(CategoryDto categoryDto);
 	public Response updateCategory(CategoryDto categoryDto);
+	public Response deleteCategory(CategoryDto categoryDto);
+	public Response getCategoryProducts(String categoryname);
 }

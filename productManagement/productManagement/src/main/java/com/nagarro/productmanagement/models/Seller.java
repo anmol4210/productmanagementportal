@@ -26,10 +26,26 @@ public class Seller {
 	
 
 	@Column(name="createdat")
-	private LocalDateTime createdat;
+	private String createdat;
 	
+	public String getCreatedat() {
+		return createdat;
+	}
+
+	public void setCreatedat(String createdat) {
+		this.createdat = createdat;
+	}
+
+	public String getUpdatedat() {
+		return updatedat;
+	}
+
+	public void setUpdatedat(String updatedat) {
+		this.updatedat = updatedat;
+	}
+
 	@Column(name="updatedat")
-	private LocalDateTime updatedat;
+	private String updatedat;
 	
 	@Column(name="sellerstatus",unique=false,nullable=false)
 	private String sellerstatus;

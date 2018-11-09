@@ -39,7 +39,9 @@ display:none;
 		<form  action="/product/allproducts">
 			<button type="submit" class="btn btn-outline-light m-3">Products</button>
 		</form>
-	
+		<form  action="category">
+			<button type="submit" class="btn btn-outline-light m-3">Categories</button>
+		</form>
 		<form method="get" action="logout">
 		<button type="submit" class="btn btn-outline-light m-3">Logout</button>
 	</form>

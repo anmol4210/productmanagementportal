@@ -32,24 +32,33 @@ display:none;
 	</style>	
 </head>
 <body>
-<form action="/allproducts/filterproducts">
-                          <div class="">
+<div class="bg-info d-flex justify-content-between shadow">
+	<h2 class="text-light font-weight-light p-3">Product List</h2>
+	
+<div>
+<form class="form-group" action="/allproducts/filterproducts">
+                          <div >
+                          <div class="d-flex">
                                  <input type="text" class="form-control m-3" placeholder="Enter keywords here" name="keyword">
-                                 <div class="d-flex justify-content-center  mx-2 my-2">
-                                         <span class="bg-success text-light p-2 rounded-left">Search by</span>
-                                           <input type="radio" name="searchBy" value="sellerid" class="mb-2"> Seller Id</br>
-                                           <input type="radio" name="searchBy" value="companyname" class="mb-2"> Company Name</br>
-                                           <input type="radio" name="searchBy" value="productid"> Product Id</br>
-                                           <input type="radio" name="searchBy" value="productname"> Product name</br>
-                                           <input type="radio" name="searchBy" value="sellerproductcode">Seller Product Code</br>
+                                 <input type="submit" class="btn btn-info" value="Find">
+                               </div>
+                                 <div class="d-flex justify-content-center">
+                                           <input type="radio" name="searchBy" value="sellerid" class="mt-2 mr-1 ml-1"> Seller Id</br>
+                                           <input type="radio" name="searchBy" value="companyname" class="mt-2 mr-1 ml-1"> Company Name</br>
+                                           <input type="radio" name="searchBy" value="productid" class="mt-2 mr-1 ml-1"> Product Id</br>
+                                           <input type="radio" name="searchBy" value="productname" class="mt-2 mr-1 ml-1"> Product name</br>
+                                           <input type="radio" name="searchBy" value="sellerproductcode" class="mt-2 mr-1 ml-1">Seller Product Code</br>
                                         
                                          
                                          
                                  </div>
                                
-                                 <input type="submit" class="btn btn-info" value="Find">
+                                 
                           </div>
                           </form>
+                          </div>
+                          <div></div>
+                          </div>
 <div class="container">
 <div class="row">
 <div class="col-sm-9">

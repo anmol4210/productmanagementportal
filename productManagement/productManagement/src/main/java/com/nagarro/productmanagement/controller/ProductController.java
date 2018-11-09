@@ -58,6 +58,8 @@ public class ProductController {
 	@PostMapping("/products")
 	public Response addProduct(@RequestBody NewProductDto product) {
 		System.out.println("add product controller.......");
+		
+		System.out.println(product.getGalleryImages()[0]);
 		 return productService.addProduct(product);		
 	}
 	

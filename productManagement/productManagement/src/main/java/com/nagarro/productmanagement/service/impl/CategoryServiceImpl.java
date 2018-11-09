@@ -29,13 +29,24 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Response addCategory(CategoryDto categoryDto) {
 		
-		return addCategory(categoryDto);
+		return categoryDao.addNewCategory(categoryDto);
 	}
 
 	@Override
 	public Response updateCategory(CategoryDto categoryDto) {
 	
-		return addCategory(categoryDto);
+		return categoryDao.updateCategory(categoryDto);
+	}
+
+	@Override
+	public Response deleteCategory(CategoryDto categoryDto) {
+		return categoryDao.deleteCategory(categoryDto);
+	}
+
+	@Override
+	public Response getCategoryProducts(String categoryname) {
+	
+		return categoryDao.getCategoryProducts(categoryname);
 	}
 
 }

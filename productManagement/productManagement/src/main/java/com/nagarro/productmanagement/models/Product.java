@@ -60,10 +60,10 @@ public class Product {
 	private String status;
 	
 	@Column(name="createdat")
-	private LocalDateTime createdat;
+	private String createdat;
 	
 	@Column(name="updatedat")
-	private LocalDateTime updatedat;
+	private String updatedat;
 	
 	@ManyToOne(optional=false)
     @JoinColumn(name="sellerid")
@@ -197,22 +197,22 @@ public class Product {
 	}
 
 
-	public LocalDateTime getCreatedat() {
+	public String getCreatedat() {
 		return createdat;
 	}
 
 
-	public void setCreatedat(LocalDateTime createdat) {
+	public void setCreatedat(String createdat) {
 		this.createdat = createdat;
 	}
 
 
-	public LocalDateTime getUpdatedat() {
+	public String getUpdatedat() {
 		return updatedat;
 	}
 
 
-	public void setUpdatedat(LocalDateTime updatedat) {
+	public void setUpdatedat(String updatedat) {
 		this.updatedat = updatedat;
 	}
 

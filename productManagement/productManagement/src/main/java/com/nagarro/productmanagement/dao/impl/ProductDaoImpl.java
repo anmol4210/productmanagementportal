@@ -1,7 +1,10 @@
 package com.nagarro.productmanagement.dao.impl;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +31,7 @@ import com.nagarro.productmanagement.models.GalleryImages;
 import com.nagarro.productmanagement.models.Product;
 import com.nagarro.productmanagement.models.Seller;
 import com.nagarro.productmanagement.models.SellerDetails;
+import com.nagarro.productmanagement.service.impl.EmailSeller;
 import com.nagarro.productmanagement.utils.HibernateUtils;
 
 @Component
@@ -35,7 +39,8 @@ public class ProductDaoImpl implements ProductDao {
 	
 	@Autowired
 	public SaveReadImagesDao saveReadImageDao;
-	
+	   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+
 	private Session session;
 	
 	public ProductDaoImpl() {
@@ -155,28 +160,21 @@ public class ProductDaoImpl implements ProductDao {
 			Seller seller = new Seller();
 			seller.setId(newProductDto.getSellerId());
 			Product product=new Product();
-			System.out.println("1");
 		product.setSellerproductcode(newProductDto.getSellerproductcode());
 		product.setProductname(newProductDto.getProductname());
-		System.out.println("3");
 		product.setShortdiscription(newProductDto.getShortdiscription());
 		product.setLongdiscription(newProductDto.getLongdiscription());	
 		product.setDimensions(newProductDto.getDimensions());
 		product.setMrp(newProductDto.getMrp());
-		System.out.println("6");
 		product.setSsp(newProductDto.getSsp());
-		System.out.println("7");
 		product.setYmp(newProductDto.getYmp()); 
 		product.setPrimaryimage(newProductDto.getPrimaryimage());
-		System.out.println("8");
 		product.setUsageinstructins(newProductDto.getUsageinstructins());
 		product.setStatus(Constants.NEED_APPROVAL);
 		
 		
-		//LocalDateTime currenttime=LocalDateTime.now();
-		
-		//product.setCreatedat(currenttime);
-		//product.setUpdatedat(currenttime);		
+		product.setCreatedat(dateFormat.format(new Date()));
+		product.setUpdatedat(dateFormat.format(new Date()));		
 		//product.setComments(newProductDto.getComments());
 		
 		product.setProductattributes(newProductDto.getProductattributes());
@@ -189,14 +187,18 @@ public class ProductDaoImpl implements ProductDao {
 //			session.save(categories);
 //		}
 		
-//		for(String imageurl:newProductDto.getGalleryImages() ) {
-//			GalleryImages galleryImage=new GalleryImages();
-//			galleryImage.setImageurl(imageurl);
-//			galleryImage.setProduct(product);
-//			session.save(galleryImage);
-//			
-//			
-//		}
+		
+		if(newProductDto!= null && newProductDto.getGalleryImages()!=null )
+		{
+			for(String imageurl:newProductDto.getGalleryImages() ) {
+			GalleryImages galleryImage=new GalleryImages();
+			galleryImage.setImageurl(imageurl);
+			galleryImage.setProduct(product);
+			session.save(galleryImage);
+			
+			
+		}
+			}
 		
 		session.save(product);
 		session.getTransaction().commit();
@@ -229,7 +231,7 @@ public class ProductDaoImpl implements ProductDao {
 		this.session.beginTransaction();
 	
 		Response response=new Response();
-		
+		EmailSeller emailseller=new EmailSeller();
 		try {
 		
 			for(StatusDto productStatus:status) {
@@ -237,6 +239,12 @@ public class ProductDaoImpl implements ProductDao {
 			Product product=(Product) object;
 			product.setStatus(productStatus.getStatus());
 			product.setComments(productStatus.getMessage());
+			
+			if(productStatus.getMessage() != null) {
+				
+				emailseller.emailSeller(product,productStatus.getMessage());
+			}
+			product.setUpdatedat(dateFormat.format(new Date()));
 			session.getTransaction().commit();
 		}
 		
@@ -327,11 +335,11 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public Response updateProduct(ProductDto newProductDto) {
-		System.out.println("updating products.............");
+		
 		this.session = HibernateUtils.createSession();
 		this.session.beginTransaction();
 	
-		Response<String> response=new Response();
+		Response<String> response=new Response<String>();
 		try {
 		Object object = session.load(Product.class, new Integer(""+newProductDto.getId()));
 		Product product = (Product) object;
@@ -353,6 +361,7 @@ public class ProductDaoImpl implements ProductDao {
 		product.setUsageinstructins(newProductDto.getUsageinstructins());
 		//product.setStatus(newProductDto.getStatus());
 		product.setId(newProductDto.getId());
+		product.setUpdatedat(dateFormat.format(new Date()));
 		//user.setPassword(resetUser.getPassword());
 		session.getTransaction().commit();
 		response.setStatus(200);
