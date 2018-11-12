@@ -175,17 +175,20 @@ public class ProductDaoImpl implements ProductDao {
 		
 		product.setCreatedat(dateFormat.format(new Date()));
 		product.setUpdatedat(dateFormat.format(new Date()));		
-		//product.setComments(newProductDto.getComments());
 		
 		product.setProductattributes(newProductDto.getProductattributes());
 		product.setSeller(seller);
 	
-//		for(String category:newProductDto.getCategories()) {
-//			Categories categories=new Categories();
-//			categories.setCategoryname(category);
-//			categories.setProduct(product);
-//			session.save(categories);
-//		}
+		if(newProductDto!= null && newProductDto.getCategories()!=null )
+		{
+		
+		for(String category:newProductDto.getCategories()) {
+			Categories categories=new Categories();
+			categories.setCategoryname(category);
+			categories.setProduct(product);
+			session.save(categories);
+			}
+		}
 		
 		
 		if(newProductDto!= null && newProductDto.getGalleryImages()!=null )
@@ -202,17 +205,7 @@ public class ProductDaoImpl implements ProductDao {
 		
 		session.save(product);
 		session.getTransaction().commit();
-//		if (session.save(product) != null) {
-//			ResponseData responseData = new ResponseData();
-//			System.out.println("seller id:"+seller.getId());
-//			response.setStatus(200);
-//			} 
-//		else {
-//		
-//		response.setStatus(400);
-//		response.setMessage("Unable to add Data");
-//
-//	}
+
 		response.setStatus(200);
 		
 		}
@@ -314,7 +307,6 @@ public class ProductDaoImpl implements ProductDao {
 			
 		}
 		response.setStatus(200);
-		//System.out.println("product Set:"+productList.get(1).getCategories()[0]);
 		response.setData(productDto);
 		}
 		else {
@@ -343,26 +335,20 @@ public class ProductDaoImpl implements ProductDao {
 		try {
 		Object object = session.load(Product.class, new Integer(""+newProductDto.getId()));
 		Product product = (Product) object;
-		//product.setCategories(newProductDto.getCategories());
-		//product.setComments(newProductDto.getComments());
 		product.setDimensions(newProductDto.getDimensions());
 		product.setLongdiscription(newProductDto.getLongdiscription());
 		product.setPrimaryimage(newProductDto.getPrimaryimage());
-		//product.setGalleryImages(newProductDto.getGalleryImages());
 		product.setMrp(newProductDto.getMrp());
 		product.setProductattributes(newProductDto.getProductattributes());
 		product.setProductname(newProductDto.getProductname());
 		
-		//product.setSeller(newProductDto.getSellerId());
 		product.setSellerproductcode(newProductDto.getSellerproductcode());
 		product.setShortdiscription(newProductDto.getShortdiscription());
 		product.setSsp(newProductDto.getSsp());
 		product.setYmp(newProductDto.getYmp());
 		product.setUsageinstructins(newProductDto.getUsageinstructins());
-		//product.setStatus(newProductDto.getStatus());
 		product.setId(newProductDto.getId());
 		product.setUpdatedat(dateFormat.format(new Date()));
-		//user.setPassword(resetUser.getPassword());
 		session.getTransaction().commit();
 		response.setStatus(200);
 		response.setData("Product updated");

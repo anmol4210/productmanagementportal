@@ -51,11 +51,7 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return response;
 
-		//System.out.println(""+list.get(0)[0]);
-//	if(list.size()>0){
-//		return true;
-//	}
-//		return false;
+	
 	}
 
 }
